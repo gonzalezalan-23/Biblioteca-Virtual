@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de Usuario · Alumnos y Docentes · Biblioteca EEST N°5</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #2563eb;
+      --brand-light: #dbeafe;
+      --text: #1e293b;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── SIDEBAR ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 260px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.25rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo .badge {
+      width: 38px; height: 38px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo h2 { font-size: .85rem; font-weight: 600; line-height: 1.3; }
+    .sidebar-logo p { font-size: .72rem; color: var(--muted); }
+
+    .sidebar-section { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 1.25rem 0 .5rem; }
+
+    .sidebar a {
+      display: block;
+      padding: .45rem .75rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .sidebar a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .badge-usuario {
+      display: inline-block;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 99px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1;
+      padding: 3rem 3.5rem;
+      max-width: 860px;
+    }
+
+    /* ── COVER ── */
+    .cover {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+      border-radius: 20px;
+      padding: 3rem;
+      color: #fff;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::after {
+      content: 'B';
+      position: absolute;
+      right: 2rem; bottom: -1rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 10rem;
+      opacity: .08;
+      line-height: 1;
+    }
+    .cover .tag { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-bottom: .75rem; }
+    .cover h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; line-height: 1.2; margin-bottom: .75rem; }
+    .cover p { opacity: .85; font-size: 1rem; max-width: 480px; }
+    .cover .meta { margin-top: 1.75rem; display: flex; gap: 1.5rem; font-size: .8rem; opacity: .7; }
+
+    /* ── SECTIONS ── */
+    .section { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: .75rem;
+      border-bottom: 2px solid var(--brand-light);
+    }
+    .section-num {
+      width: 36px; height: 36px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+    .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; }
+
+    /* ── IMAGE PLACEHOLDER ── */
+    .img-placeholder {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: var(--brand);
+      font-size: .85rem;
+      font-weight: 500;
+      margin: 1.25rem 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .img-placeholder .icon { font-size: 2rem; }
+    .img-placeholder.sm { height: 180px; }
+    .img-placeholder.lg { height: 340px; }
+    .img-placeholder img { width: 100%; height: 100%; object-fit: contain; border-radius: var(--radius); }
+
+    /* ── STEPS ── */
+    .steps { display: flex; flex-direction: column; gap: 1rem; margin: 1.25rem 0; }
+    .step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+    }
+    .step-num {
+      width: 30px; height: 30px;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .step-body strong { display: block; margin-bottom: .25rem; font-size: .95rem; }
+    .step-body p { font-size: .88rem; color: var(--muted); }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      display: flex;
+      gap: .75rem;
+      align-items: flex-start;
+      font-size: .88rem;
+    }
+    .callout.info { background: #eff6ff; border-left: 4px solid var(--brand); color: #1e40af; }
+    .callout.tip { background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; }
+    .callout.warn { background: #fffbeb; border-left: 4px solid var(--warning); color: #92400e; }
+    .callout .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: .88rem; }
+    th { background: var(--brand-light); color: var(--brand); font-weight: 700; padding: .6rem 1rem; text-align: left; }
+    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+
+    /* ── CARD GRID ── */
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+    }
+    .card .card-icon { font-size: 1.5rem; margin-bottom: .5rem; }
+    .card h4 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+    .card p { font-size: .83rem; color: var(--muted); }
+
+    p { margin-bottom: .75rem; font-size: .93rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: .75rem; font-size: .93rem; }
+    li { margin-bottom: .35rem; }
+    strong { font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: static; }
+      .main { padding: 1.5rem; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">B</div>
+      <div>
+        <h2>Biblioteca EEST N°5</h2>
+        <p>Manual de Usuario</p>
+      </div>
+    </div>
+
+    <span class="badge-usuario">🎒 Alumnos y 👩🏫 Docentes</span>
+
+    <div class="sidebar-section">Contenido</div>
+    <a href="#intro">Introducción</a>
+    <a href="#registro">Crear tu cuenta</a>
+    <a href="#login">Iniciar sesión</a>
+    <a href="#alumno">Panel del alumno</a>
+    <a href="#material">Material de estudio</a>
+    <a href="#docente">Panel del docente</a>
+    <a href="#estados">Estados y plazos</a>
+    <a href="#faq">Preguntas frecuentes</a>
+
+    <div class="sidebar-section">Otros manuales</div>
+    <a href="manual-visitante.html">👤 Manual Visitante</a>
+    <a href="manual-bibliotecaria.html">📋 Manual Bibliotecaria</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- COVER -->
+    <div class="cover">
+      <div class="tag">Biblioteca EEST N°5 · Ranelagh, Berazategui</div>
+      <h1>Manual de Alumnos y Docentes</h1>
+      <p>Guía para crear tu cuenta, iniciar sesión, reservar libros, pedir extensiones y usar el material de estudio desde tu panel personal.</p>
+      <div class="meta">
+        <span>📅 2025</span>
+        <span>🔒 Acceso con cuenta</span>
+        <span>🏫 EEST N°5</span>
+      </div>
+    </div>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <div class="section" id="intro">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Introducción</h2>
+      </div>
+      <p>El sitio de la Biblioteca EEST N°5 tiene dos partes: el <strong>catálogo público</strong>, que cualquiera puede explorar sin cuenta, y los <strong>paneles personales</strong> de alumnos y docentes, a los que se ingresa con usuario y contraseña.</p>
+      <p>Con tu cuenta podés reservar libros online, ver tus préstamos, pedir extensiones de plazo y usar el material de estudio subido por la bibliotecaria.</p>
+
+      <div class="callout info">
+        <span class="icon">ℹ️</span>
+        <span>El sitio está optimizado para celulares, tablets y computadoras. Podés usarlo desde cualquier dispositivo.</span>
+      </div>
+    </div>
+
+    <!-- 2. CREAR TU CUENTA -->
+    <div class="section" id="registro">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Crear tu cuenta</h2>
+      </div>
+      <p>Si todavía no tenés cuenta, solicitá el acceso desde la pantalla de login. Tus datos quedan registrados y la bibliotecaria los revisa antes de habilitarte el ingreso.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Entrá a "Iniciar sesión"</strong>
+            <p>Desde el sitio público, tocá "Iniciar sesión". Elegí tu rol: 🎒 Alumno o 👩🏫 Docente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Tocá "¿No tenés cuenta? Solicitá el acceso aquí"</strong>
+            <p>Se abre el formulario de registro.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Completá tus datos</strong>
+            <p>Nombre, apellido, DNI, email, teléfono y dirección son obligatorios (el teléfono es opcional). Si sos alumno, además tenés que elegir tu curso.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Enviá la solicitud</strong>
+            <p>La solicitud queda en estado <strong>Pendiente</strong> hasta que la bibliotecaria la revise.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Esperá la aprobación</strong>
+            <p>Cuando la bibliotecaria apruebe tu cuenta, te llega un email con tus datos de acceso. Recién ahí podés iniciar sesión.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="icon">💡</span>
+        <span>Usá un email que revises seguido: ahí se envían las notificaciones de aprobación, de reserva lista para retirar y de vencimientos.</span>
+      </div>
+
+      <div class="callout warn">
+        <span class="icon">⚠️</span>
+        <span>Si tu solicitud sigue en "Pendiente" hace varios días, consultá presencialmente en la biblioteca. No se pueden aprobar cuentas sin verificar los datos.</span>
+      </div>
+    </div>
+
+    <!-- 3. INICIAR SESIÓN -->
+    <div class="section" id="login">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Iniciar sesión</h2>
+      </div>
+      <p>Una vez aprobada tu cuenta, ingresá con tu <strong>DNI</strong> y tu <strong>contraseña</strong>.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Elegí tu rol</strong>
+            <p>Alumno o Docente. El sistema te lleva a tu panel correspondiente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Ingresá tu DNI y contraseña</strong>
+            <p><strong>La contraseña inicial es tu DNI.</strong> Podés mostrarla u ocularla con el ícono 👁.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Cambiá tu contraseña</strong>
+            <p>Recomendamos hacerlo apenas ingreses: andá a la pestaña 🔒 Cuenta de tu panel y poné una nueva contraseña (mínimo 6 caracteres).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="icon">⚠️</span>
+        <span><strong>¿Olvidaste tu contraseña?</strong> La inicial siempre es tu DNI. Si la cambiaste y no la recordás, consultá con la bibliotecaria para restablecerla.</span>
+      </div>
+    </div>
+
+    <!-- 4. PANEL DEL ALUMNO -->
+    <div class="section" id="alumno">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Panel del alumno</h2>
+      </div>
+      <p>El panel del alumno tiene cuatro pestañas en la barra superior: 📋 Préstamos, 🔍 Catálogo, 📚 Material y 🔒 Cuenta.</p>
+
+      <h3 style="margin:1.2rem 0 .6rem;font-size:1.05rem;">📋 Préstamos</h3>
+      <p>Es la pestaña principal. Arriba ves cuatro indicadores (KPIs):</p>
+      <table>
+        <thead>
+          <tr><th>Indicador</th><th>Qué muestra</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>📖 Activos</td><td>Libros que tenés en préstamo ahora mismo.</td></tr>
+          <tr><td>⏳ Pend. retiro</td><td>Reservas aprobadas que estás esperando retirar.</td></tr>
+          <tr><td>⚠️ Por vencer</td><td>Préstamos que vencen en los próximos días.</td></tr>
+          <tr><td>📊 Historial</td><td>Total de préstamos y solicitudes de tu historial.</td></tr>
+        </tbody>
+      </table>
+      <p>Debajo se lista cada préstamo con su <strong>libro</strong>, <strong>estado</strong>, <strong>fecha de vencimiento</strong> y, cuando corresponde, un botón de acción. Podés filtrar la lista por estado con el desplegable (Todos, Activo/Retirado, Pendiente de Retiro, Vencido, Devuelto).</p>
+
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1.05rem;">📅 Pedir una extensión</h3>
+      <p>Si necesitás más tiempo con un libro, pedí una extensión de plazo:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Tocá "📅 Extender"</strong>
+            <p>El botón aparece en la fila del préstamo (solo para préstamos activos o pendientes de retiro).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Escribí el motivo (opcional)</strong>
+            <p>Por ejemplo: "Necesito más tiempo para el trabajo práctico".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Enviá la solicitud</strong>
+            <p>Queda en estado <strong>Pendiente</strong> hasta que la bibliotecaria la apruebe o rechace.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1.05rem;">🔍 Reservar un libro desde el Catálogo</h3>
+      <p>En la pestaña 🔍 Catálogo buscás y reservás libros sin salir de tu panel:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Buscá el libro</strong>
+            <p>Escribí el título o el autor en el buscador. Por defecto se muestran solo los disponibles.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Tocá "Solicitar préstamo"</strong>
+            <p>Tus datos personales se completan solos y no se pueden editar. Elegí por cuántos días necesitás el libro (máximo 30).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Confirmá la solicitud</strong>
+            <p>La bibliotecaria la revisa. Cuando el libro esté separado, figura en tu pestaña Préstamos como "Pendiente de Retiro" con la fecha límite para retirarlo.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Retirá en la biblioteca</strong>
+            <p>Presentate con tu DNI antes de la fecha límite. Si no lo retirás a tiempo, la reserva se vence.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1.05rem;">🔒 Cuenta</h3>
+      <p>En esta pestaña ves tus datos (nombre, curso, DNI y email), podés <strong>cambiar tu contraseña</strong> o <strong>cerrar sesión</strong> (siempre con confirmación previa).</p>
+
+      <div class="callout info">
+        <span class="icon">ℹ️</span>
+        <span>En celular, las pestañas se agrupan en un desplegable (📋 Préstamos ▾). Tocalo para cambiar de sección.</span>
+      </div>
+    </div>
+
+    <!-- 5. MATERIAL DE ESTUDIO -->
+    <div class="section" id="material">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Material de estudio</h2>
+      </div>
+      <p>La pestaña 📚 Material muestra los PDFs, links, guías y videos que la bibliotecaria sube para tu año. Solo ves el material de tu nivel (o de años anteriores del ciclo).</p>
+
+      <p><strong>Filtros disponibles:</strong></p>
+      <table>
+        <thead>
+          <tr><th>Filtro</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🔍 Buscador</td><td>Filtra por título o materia en tiempo real.</td></tr>
+          <tr><td>📁 Tipo de recurso</td><td>Todos, PDF, Link, Guía o Video.</td></tr>
+          <tr><td>🎓 Año</td><td>Botones del 1° al 7°, o "Todos".</td></tr>
+          <tr><td>⭐ Favoritos</td><td>Mostrar solo los recursos que marcaste como favoritos.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin:1.2rem 0 .6rem;font-size:1.05rem;">Marcar favoritos</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Tocá la estrella ☆ de una tarjeta</strong>
+            <p>Se pone llena (★) y dorada: el recurso quedó guardado en tus favoritos.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Activá "Mostrar solo mis favoritos"</strong>
+            <p>El botón ⭐ filtra la lista para que solo se vean tus recursos marcados.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Desmarcá cuando quieras</strong>
+            <p>Volvé a tocar la estrella ★ para quitarlo de favoritos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="icon">💡</span>
+        <span>Tus favoritos se guardan en tu cuenta: los ves igual desde cualquier dispositivo donde inicies sesión.</span>
+      </div>
+    </div>
+
+    <!-- 6. PANEL DEL DOCENTE -->
+    <div class="section" id="docente">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Panel del docente</h2>
+      </div>
+      <p>El panel del docente tiene tres pestañas: 📚 Mis Préstamos, ➕ Solicitar Libros y 🔒 Mi Cuenta.</p>
+
+      <h3 style="margin:1.2rem 0 .6rem;font-size:1.05rem;">📚 Mis Préstamos</h3>
+      <p>Muestra tres indicadores (préstamos activos, solicitudes pendientes e historial total) y una tabla con todo tu historial: libro, tipo, estado, fecha y observaciones.</p>
+
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1.05rem;">➕ Solicitar Libros</h3>
+      <p>Podés pedir libros de dos maneras:</p>
+      <table>
+        <thead>
+          <tr><th>Tipo de solicitud</th><th>Cuándo usarla</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>👤 Uso personal</td><td>Para vos. Solo elegís el libro, la fecha estimada de uso y observaciones.</td></tr>
+          <tr><td>👥 Lote para clase</td><td>Para trabajar con un curso. Además de lo anterior, indicás la cantidad de ejemplares (hasta 40) y la materia/curso.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Elegí el tipo de solicitud</strong>
+            <p>Uso personal o Lote para clase.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Buscá y seleccioná el libro</strong>
+            <p>Escribí el título y elegí el resultado de la lista desplegable.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Completá los datos</strong>
+            <p>Para lote: cantidad de ejemplares y materia/curso. En ambos casos: fecha estimada de uso y observaciones.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Enviá la solicitud</strong>
+            <p>Queda en estado <strong>Pendiente</strong> hasta que la bibliotecaria confirme la disponibilidad y prepare los ejemplares.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1.05rem;">🔒 Mi Cuenta</h3>
+      <p>Al igual que el alumno, podés ver tus datos, <strong>cambiar tu contraseña</strong> y <strong>cerrar sesión</strong>.</p>
+
+      <div class="callout info">
+        <span class="icon">ℹ️</span>
+        <span>El docente no tiene pestaña de material de estudio ni de favoritos: esos recursos están pensados para el alumnado.</span>
+      </div>
+    </div>
+
+    <!-- 7. ESTADOS Y PLAZOS -->
+    <div class="section" id="estados">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2>Estados y plazos</h2>
+      </div>
+      <p>Estos son los estados que vas a ver en tus préstamos, reservas y extensiones:</p>
+
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>Qué significa</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>⏳ Pendiente</td><td>Tu solicitud (de reserva, extensión o lote) está esperando la revisión de la bibliotecaria.</td></tr>
+          <tr><td>📤 Pendiente de Retiro</td><td>Tu reserva fue aprobada y el libro está separado. Tenés 48 horas para retirarlo.</td></tr>
+          <tr><td>✅ Activo / Retirado</td><td>Retiraste el libro. Ya figura con su fecha de vencimiento.</td></tr>
+          <tr><td>⚠️ Vencido</td><td>Pasó la fecha de devolución. Devuvelo lo antes posible.</td></tr>
+          <tr><td>✔️ Devuelto</td><td>El libro ya fue devuelto y cerrado.</td></tr>
+          <tr><td>❌ Rechazado</td><td>La solicitud no pudo cumplirse (por ejemplo, no había ejemplares disponibles).</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Plazos principales:</strong></p>
+      <ul>
+        <li><strong>Retiro de reserva:</strong> 48 horas desde que fue aprobada.</li>
+        <li><strong>Préstamo:</strong> hasta 30 días, según lo que hayas pedido al solicitar.</li>
+        <li><strong>Extensiones:</strong> se aprueban o rechazan según la disponibilidad (por ejemplo, si otro alumno ya reservó ese título).</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="icon">⚠️</span>
+        <span>Si un libro está vencido o dañado, avisá en la biblioteca. La devolución en mal estado debe registrarse al momento de la entrega.</span>
+      </div>
+    </div>
+
+    <!-- 8. FAQ -->
+    <div class="section" id="faq">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2>Preguntas frecuentes</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Puedo reservar un libro sin cuenta?</strong>
+            <p>No. La reserva online y el uso del material de estudio requieren cuenta aprobada. Sin cuenta, podés explorar el catálogo y solicitar préstamos presencialmente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Cuántos libros puedo tener prestados a la vez?</strong>
+            <p>El sistema te muestra todos tus préstamos activos en la pestaña 📋 Préstamos. Las condiciones exactas (cantidad máxima y plazos) las define la biblioteca.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Cómo sé cuándo vence mi préstamo?</strong>
+            <p>En la tabla "Mis Préstamos", en la columna "Vence". También los indicadores arriba marcan en rojo los préstamos por vencer.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Puedo cancelar una reserva?</strong>
+            <p>Si todavía no fue aprobada, consultá en la biblioteca. Una vez aprobada, si no la retirás en 48 horas se vence automáticamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Por qué no veo cierto material de estudio?</strong>
+            <p>El material se filtra por año. Si recién te crearon la cuenta, revisá que tu curso esté bien cargado en la pestaña 🔒 Cuenta. Si sigue sin aparecer, consultá en la biblioteca.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <strong>¿Dónde está la biblioteca?</strong>
+            <p>Calle 316 S/N esq. 368 B, Barrio Luz, Ranelagh, Berazategui. Teléfono: 4258-4356. Email: eestn5berazategui@gmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

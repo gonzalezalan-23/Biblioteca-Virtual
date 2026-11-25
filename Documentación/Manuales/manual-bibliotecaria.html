@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de Usuario · Bibliotecaria · Biblioteca EEST N°5</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #2563eb; --brand-light: #dbeafe; --text: #1e293b;
+      --muted: #64748b; --bg: #f8fafc; --white: #ffffff;
+      --border: #e2e8f0; --success: #22c55e; --warning: #f59e0b; --radius: 14px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--border); padding: 2rem 1.25rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-logo { display: flex; align-items: center; gap: .75rem; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    .sidebar-logo .badge { width: 38px; height: 38px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 1.2rem; flex-shrink: 0; }
+    .sidebar-logo h2 { font-size: .85rem; font-weight: 600; line-height: 1.3; }
+    .sidebar-logo p { font-size: .72rem; color: var(--muted); }
+    .sidebar-section { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 1.25rem 0 .5rem; }
+    .sidebar a { display: block; padding: .45rem .75rem; border-radius: 8px; font-size: .85rem; color: var(--text); text-decoration: none; transition: background .15s; }
+    .sidebar a:hover { background: var(--brand-light); color: var(--brand); }
+    .badge-admin { display: inline-block; background: #e0f2fe; color: #075985; font-size: .7rem; font-weight: 700; padding: .2rem .6rem; border-radius: 99px; margin-bottom: 1.5rem; }
+    .main { flex: 1; padding: 3rem 3.5rem; max-width: 860px; }
+    .cover { background: linear-gradient(135deg, #0f172a 0%, #1e40af 60%, #3b82f6 100%); border-radius: 20px; padding: 3rem; color: #fff; margin-bottom: 3rem; position: relative; overflow: hidden; }
+    .cover::after { content: 'B'; position: absolute; right: 2rem; bottom: -1rem; font-family: 'DM Serif Display', serif; font-size: 10rem; opacity: .08; line-height: 1; }
+    .cover .tag { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-bottom: .75rem; }
+    .cover h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; line-height: 1.2; margin-bottom: .75rem; }
+    .cover p { opacity: .85; font-size: 1rem; max-width: 520px; }
+    .cover .meta { margin-top: 1.75rem; display: flex; gap: 1.5rem; font-size: .8rem; opacity: .7; }
+    .section { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
+    .section-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; padding-bottom: .75rem; border-bottom: 2px solid var(--brand-light); }
+    .section-num { width: 36px; height: 36px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
+    .section-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; }
+    .img-placeholder { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; color: var(--brand); font-size: .85rem; font-weight: 500; margin: 1.25rem 0; overflow: hidden; }
+    .img-placeholder img { width: 100%; height: auto; object-fit: contain; border-radius: var(--radius); display: block; }
+    .img-placeholder span { padding: .5rem; text-align: center; }
+    .steps { display: flex; flex-direction: column; gap: 1rem; margin: 1.25rem 0; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+    .step-num { width: 30px; height: 30px; background: var(--brand); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; flex-shrink: 0; margin-top: .1rem; }
+    .step-body strong { display: block; margin-bottom: .25rem; font-size: .95rem; }
+    .step-body p { font-size: .88rem; color: var(--muted); }
+    .callout { border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1.25rem 0; display: flex; gap: .75rem; align-items: flex-start; font-size: .88rem; }
+    .callout.info { background: #eff6ff; border-left: 4px solid var(--brand); color: #1e40af; }
+    .callout.tip  { background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; }
+    .callout.warn { background: #fffbeb; border-left: 4px solid var(--warning); color: #92400e; }
+    .callout .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: .88rem; }
+    th { background: var(--brand-light); color: var(--brand); font-weight: 700; padding: .6rem 1rem; text-align: left; }
+    td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .card .card-icon { font-size: 1.5rem; margin-bottom: .5rem; }
+    .card h4 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+    .card p { font-size: .83rem; color: var(--muted); }
+    p { margin-bottom: .75rem; font-size: .93rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: .75rem; font-size: .93rem; }
+    li { margin-bottom: .35rem; }
+    strong { font-weight: 600; }
+    h3 { margin: 1.4rem 0 .6rem; font-size: 1.05rem; }
+    @media (max-width: 768px) { .layout { flex-direction: column; } .sidebar { width: 100%; height: auto; position: static; } .main { padding: 1.5rem; } .card-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">B</div>
+      <div><h2>Biblioteca EEST N°5</h2><p>Manual de Administradores</p></div>
+    </div>
+    <span class="badge-admin">🛠️ Para bibliotecarias</span>
+    <div class="sidebar-section">Contenido</div>
+    <a href="#intro">1. Introducción</a>
+    <a href="#acceso">2. Acceso al panel</a>
+    <a href="#cuentas">3. Aprobación de cuentas</a>
+    <a href="#prestamos">4. Préstamos</a>
+    <a href="#reservas">5. Reservas online</a>
+    <a href="#extensiones">6. Extensiones</a>
+    <a href="#lotes">7. Lotes docentes</a>
+    <a href="#catalogo">8. Catálogo e inventario</a>
+    <a href="#categorias">9. Categorías</a>
+    <a href="#material">10. Material de estudio</a>
+    <a href="#estadisticas">11. Estadísticas</a>
+    <a href="#seguridad">12. Seguridad</a>
+    <a href="#faq">13. Preguntas frecuentes</a>
+    <div class="sidebar-section">Otros manuales</div>
+    <a href="manual-visitante.html">👤 Manual Visitante</a>
+    <a href="manual-alumnos-docentes.html">🎒 Manual Alumnos y Docentes</a>
+  </aside>
+
+  <main class="main">
+
+    <div class="cover">
+      <div class="tag">Biblioteca EEST N°5 · Ranelagh, Berazategui</div>
+      <h1>Manual de la Bibliotecaria</h1>
+      <p>Guía práctica para administrar el catálogo, gestionar préstamos, aprobar cuentas, cargar material de estudio y mantener el sistema.</p>
+      <div class="meta"><span>📅 2026</span><span>🔒 Acceso restringido</span><span>🏫 EEST N°5</span></div>
+    </div>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <div class="section" id="intro">
+      <div class="section-header"><div class="section-num">1</div><h2>Introducción</h2></div>
+      <p>Este manual está diseñado para las bibliotecarias y administradoras del sistema. Cubre el acceso al panel, la aprobación de cuentas, la gestión de préstamos y reservas, la carga de material de estudio y las estadísticas.</p>
+      <div class="callout info"><span class="icon">ℹ️</span><span>Todos los cambios en el panel se reflejan de inmediato en el sitio público. Revisá el stock y la disponibilidad antes de guardar.</span></div>
+      <div class="img-placeholder"><img src="../Interfaces/admin vista general.PNG" alt="Vista general del panel administrativo"><span>Vista general del panel administrativo</span></div>
+      <div class="img-placeholder"><img src="../Interfaces/admin sidebar.PNG" alt="Barra lateral"><span>Barra lateral de navegación</span></div>
+    </div>
+
+    <!-- 2. ACCESO AL PANEL -->
+    <div class="section" id="acceso">
+      <div class="section-header"><div class="section-num">2</div><h2>Acceso al panel</h2></div>
+      <p>El panel administrativo es independiente del portal de alumnos y docentes. Se accede desde <strong>admin/login.html</strong>.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ingresar a admin/login.html</strong><p>Ese es el único punto de entrada para el personal autorizado. No uses el portal-login.html de alumnos.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Completar email y contraseña</strong><p>Las credenciales son las del usuario con rol <em>admin</em> en Supabase Auth.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Navegar por el menú lateral</strong><p>Al ingresar verás el dashboard con los módulos: Préstamos, Reservas, Usuarios, Inventario, Categorías, Material, Estadísticas.</p></div></div>
+      </div>
+      <div class="callout tip"><span class="icon">💡</span><span>Cerrá sesión al terminar. No dejes la sesión abierta en computadoras compartidas.</span></div>
+    </div>
+
+    <!-- 3. APROBACIÓN DE CUENTAS -->
+    <div class="section" id="cuentas">
+      <div class="section-header"><div class="section-num">3</div><h2>Aprobación de cuentas</h2></div>
+      <p>Los alumnos y docentes se registran solos desde el portal, pero sus cuentas quedan <strong>inactivas</strong> hasta que vos las apruebes. El módulo <strong>Usuarios</strong> muestra las solicitudes pendientes con un badge de cantidad.</p>
+      <div class="img-placeholder"><img src="../Interfaces/admin gestion usuarios.PNG" alt="Gestión de usuarios"><span>Panel de gestión de usuarios — solicitudes pendientes arriba</span></div>
+      <div class="img-placeholder"><img src="../Interfaces/admin lista usuarios.PNG" alt="Lista de usuarios"><span>Lista completa de usuarios registrados</span></div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Revisá los datos</strong><p>Verificá nombre, DNI, email y curso contra los registros de la escuela. Si algo no coincide, rechazá la solicitud.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Aprobá la cuenta</strong><p>Al aprobar, el sistema activa la cuenta y el usuario puede ingresar. <strong>La contraseña inicial es el DNI</strong>; se recomienda cambiarla en el primer ingreso.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Rechazá si hay dudas</strong><p>Al rechazar se elimina el registro pendiente. El usuario deberá volver a registrarse con datos correctos.</p></div></div>
+      </div>
+      <div class="callout warn"><span class="icon">⚠️</span><span>Si un pedido tiene datos que no podés verificar, rechazalo y consultá con el equipo docente antes de habilitarlo.</span></div>
+      <table>
+        <thead><tr><th>Estado de cuenta</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr><td>Pendiente</td><td>El usuario se registró pero aún no fue aprobado. No puede iniciar sesión.</td></tr>
+          <tr><td>Activo</td><td>Cuenta habilitada. Puede ingresar al portal con su DNI como contraseña inicial.</td></tr>
+          <tr><td>Rechazado</td><td>El registro fue eliminado. El usuario debe volver a solicitarlo.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. PRÉSTAMOS -->
+    <div class="section" id="prestamos">
+      <div class="section-header"><div class="section-num">4</div><h2>Préstamos</h2></div>
+      <p>El módulo de préstamos centraliza todos los movimientos de ejemplares físicos. Desde acá podés registrar préstamos nuevos, aprobar solicitudes, marcar devoluciones y editar fechas.</p>
+      <div class="img-placeholder"><img src="../Interfaces/admin gestion prestamos.PNG" alt="Gestión de préstamos"><span>Lista de préstamos con filtros y estados</span></div>
+      <div class="img-placeholder"><img src="../Interfaces/admin alta prestamo.PNG" alt="Alta de préstamo"><span>Formulario de alta de préstamo manual</span></div>
+
+      <h3>Registrar un préstamo manual</h3>
+      <p>Usá el formulario de alta cuando el alumno o docente retira el libro en persona sin haber hecho una reserva online previa.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ingresá el DNI del usuario</strong><p>El sistema autocompleta nombre, apellido, email y curso si el usuario ya existe. Si es nuevo, completá los campos manualmente.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Seleccioná el libro y el ejemplar</strong><p>Buscá el título y elegí un ejemplar disponible por número de inventario. Podés agregar varias filas para prestar varios libros a la vez.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Confirmá la fecha de devolución</strong><p>El sistema propone 14 días. Podés ajustarla. No puede ser anterior a hoy.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Guardá el préstamo</strong><p>El ejemplar queda marcado como prestado y el stock disponible se actualiza automáticamente.</p></div></div>
+      </div>
+
+      <h3>Estados de un préstamo</h3>
+      <table>
+        <thead><tr><th>Estado</th><th>Descripción</th><th>Acciones disponibles</th></tr></thead>
+        <tbody>
+          <tr><td>Pendiente</td><td>Solicitud registrada, aún no aprobada.</td><td>Aprobar / Rechazar</td></tr>
+          <tr><td>Activo</td><td>Libro en manos del usuario dentro del plazo.</td><td>Devuelto / Editar</td></tr>
+          <tr><td>Vencido</td><td>Plazo superado, libro no devuelto.</td><td>Devuelto / Editar / Recordatorio</td></tr>
+          <tr><td>Devuelto</td><td>Libro reingresado a la biblioteca.</td><td>Reactivar (si fue error)</td></tr>
+          <tr><td>Rechazado</td><td>Solicitud denegada.</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Recordatorios por email</h3>
+      <p>El botón <strong>📧 Recordatorios</strong> envía un email a todos los usuarios con préstamos activos o vencidos que tengan email registrado. También podés enviar un recordatorio individual con el ícono 📧 en cada fila.</p>
+      <div class="callout warn"><span class="icon">⚠️</span><span>Verificá el estado del libro al registrar una devolución. Si está dañado, bajá el ejemplar del inventario antes de volver a asignarlo.</span></div>
+    </div>
+
+    <!-- 5. RESERVAS ONLINE -->
+    <div class="section" id="reservas">
+      <div class="section-header"><div class="section-num">5</div><h2>Reservas online</h2></div>
+      <p>Cuando un alumno o docente reserva un libro desde el catálogo público, la solicitud aparece en <strong>Reservas Online</strong> con estado <em>Pendiente de Aprobación</em>. El flujo tiene dos pasos: asignar un ejemplar y luego confirmar la entrega física.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Revisá la solicitud</strong><p>Verificá que el libro tenga ejemplares disponibles. Si no hay stock, rechazá la solicitud; el usuario recibe un email avisándole.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Asigná un ejemplar</strong><p>Seleccioná un ejemplar físico disponible y confirmá. La solicitud pasa a <em>Pendiente de Retiro</em> y el ejemplar queda reservado por 48 horas.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Confirmá la entrega</strong><p>Cuando el usuario retire el libro en persona, confirmá la entrega. Se crea el préstamo activo con la fecha de devolución y se envía el email de confirmación.</p></div></div>
+      </div>
+      <div class="callout warn"><span class="icon">⚠️</span><span>Si el usuario no retira el libro en 48 horas, la reserva vence automáticamente y el ejemplar vuelve a estar disponible.</span></div>
+      <table>
+        <thead><tr><th>Estado</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr><td>Pendiente de Aprobación</td><td>El usuario hizo la solicitud. Esperando que la bibliotecaria asigne un ejemplar.</td></tr>
+          <tr><td>Pendiente de Retiro</td><td>Ejemplar asignado. El usuario tiene 48 h para pasar a retirarlo.</td></tr>
+          <tr><td>Retirado</td><td>Entrega confirmada. El préstamo activo ya figura en el módulo de Préstamos.</td></tr>
+          <tr><td>Rechazado / Vencido</td><td>Solicitud cancelada o plazo de retiro superado.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6. EXTENSIONES -->
+    <div class="section" id="extensiones">
+      <div class="section-header"><div class="section-num">6</div><h2>Extensiones de préstamo</h2></div>
+      <p>Los alumnos y docentes pueden pedir más tiempo para un libro desde su panel. Las solicitudes aparecen en el módulo de <strong>Extensiones</strong> con estado <em>Pendiente</em>.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Revisá la solicitud</strong><p>Verificá si hay otras reservas esperando ese título. Si otro alumno lo necesita, rechazá la extensión.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Aprobá o rechazá</strong><p>Al aprobar, ingresá la nueva fecha de devolución (debe ser posterior a hoy). Al rechazar, el préstamo mantiene su fecha original.</p></div></div>
+      </div>
+      <div class="callout info"><span class="icon">ℹ️</span><span>Un alumno no puede pedir una segunda extensión mientras la primera esté pendiente. El sistema lo bloquea automáticamente.</span></div>
+    </div>
+
+    <!-- 7. LOTES DOCENTES -->
+    <div class="section" id="lotes">
+      <div class="section-header"><div class="section-num">7</div><h2>Lotes para clase (docentes)</h2></div>
+      <p>Los docentes pueden solicitar varios ejemplares del mismo libro para usar en clase. Estas solicitudes se agrupan como un <strong>lote</strong> y se gestionan juntas.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Identificar el lote</strong><p>En Reservas Online, las solicitudes de lote aparecen agrupadas con la etiqueta <em>Solicitud por lote</em> y la cantidad de ejemplares pedidos.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Asignar ejemplares</strong><p>El sistema selecciona automáticamente los ejemplares libres en orden de inventario y los asigna a cada fila del lote en una sola operación.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Confirmar la entrega</strong><p>Al confirmar, se crean todos los préstamos del lote a la vez. La fecha de devolución es el mismo día (los libros se usan en clase y se devuelven al final).</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Registrar la devolución</strong><p>En el módulo de Préstamos, el lote aparece agrupado. El botón <em>Devolver lote</em> marca todos los ejemplares como devueltos en un solo clic.</p></div></div>
+      </div>
+      <div class="callout warn"><span class="icon">⚠️</span><span>Si no hay suficientes ejemplares libres para completar el lote, el sistema rechaza la asignación completa. No se asignan ejemplares parciales.</span></div>
+    </div>
+
+    <!-- 8. CATÁLOGO E INVENTARIO -->
+    <div class="section" id="catalogo">
+      <div class="section-header"><div class="section-num">8</div><h2>Catálogo e inventario</h2></div>
+      <p>El catálogo agrupa los títulos bibliográficos. El inventario registra cada ejemplar físico con su número de inventario único. El stock disponible se calcula solo: ejemplares totales menos los prestados o reservados.</p>
+      <div class="img-placeholder"><img src="../Interfaces/admin gestion inventario.PNG" alt="Gestión de inventario"><span>Panel de inventario y stock por título</span></div>
+      <div class="card-grid">
+        <div class="card"><div class="card-icon">➕</div><h4>Agregar libro</h4><p>Completá título, autor, categoría, ISBN, editorial, edición y año. El panel puede autocompletar datos bibliográficos pegando el ISBN (Open Library).</p></div>
+        <div class="card"><div class="card-icon">📦</div><h4>Agregar ejemplar</h4><p>Por cada copia física ingresá un número de inventario único (ej: INV-0042). El stock sube automáticamente.</p></div>
+        <div class="card"><div class="card-icon">✏️</div><h4>Editar libro</h4><p>Actualizá descripción, datos bibliográficos o el enlace a PDF/Drive cuando cambie la información.</p></div>
+        <div class="card"><div class="card-icon">🗑️</div><h4>Dar de baja ejemplar</h4><p>Si un ejemplar se pierde o daña, eliminalo del inventario. No se puede eliminar un ejemplar con préstamo activo.</p></div>
+      </div>
+      <table>
+        <thead><tr><th>Campo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td>Título</td><td>Nombre completo del libro.</td></tr>
+          <tr><td>Autor</td><td>Se crea automáticamente si no existe.</td></tr>
+          <tr><td>Categoría</td><td>Determina en qué sección del carrusel aparece.</td></tr>
+          <tr><td>ISBN</td><td>Código bibliográfico del título (uno por título, compartido por todos sus ejemplares).</td></tr>
+          <tr><td>Enlace digital</td><td>URL a PDF/Drive si existe versión digital. Los alumnos la ven en el catálogo.</td></tr>
+          <tr><td>Nro. inventario</td><td>Identificador único de cada ejemplar físico (ej: INV-0042).</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip"><span class="icon">💡</span><span>Actualizá el inventario al final del día para mantener la información sincronizada con los préstamos y devoluciones.</span></div>
+    </div>
+
+    <!-- 9. CATEGORÍAS -->
+    <div class="section" id="categorias">
+      <div class="section-header"><div class="section-num">9</div><h2>Categorías</h2></div>
+      <p>Las categorías organizan el catálogo y aparecen en el carrusel de la página pública. Cada categoría tiene nombre, descripción, color de acento e imagen para el carrusel.</p>
+      <div class="img-placeholder"><img src="../Interfaces/admin gestion categorias.PNG" alt="Gestión de categorías"><span>Panel de gestión de categorías</span></div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Crear categoría</strong><p>Ingresá nombre, descripción breve, color hexadecimal y una imagen representativa para el carrusel.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Editar categoría</strong><p>Podés cambiar cualquier campo. El cambio se refleja de inmediato en el catálogo público.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Eliminar categoría</strong><p>Solo podés eliminar categorías sin libros asignados. Reasigná los libros antes de borrarla.</p></div></div>
+      </div>
+      <div class="callout tip"><span class="icon">💡</span><span>Mantené las categorías simples y consistentes: Ciencias, Literatura, Informática, Historia, Matemáticas, Tecnología.</span></div>
+    </div>
+
+    <!-- 10. MATERIAL DE ESTUDIO -->
+    <div class="section" id="material">
+      <div class="section-header"><div class="section-num">10</div><h2>Material de estudio</h2></div>
+      <p>El módulo de material de estudio permite cargar PDFs, links, guías y videos para los alumnos. Cada recurso se asigna a un año escolar, ciclo y tecnicatura, y solo lo ven los alumnos del nivel correspondiente.</p>
+
+      <h3>Cómo se segmenta el material</h3>
+      <table>
+        <thead><tr><th>Campo</th><th>Valores válidos</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td>Año escolar</td><td>1 a 7</td><td>Solo lo ven alumnos de ese año o superiores (ciclo técnico).</td></tr>
+          <tr><td>Ciclo</td><td><code>basico</code> (1–3) · <code>tecnico</code> (4–7)</td><td>Filtra por etapa escolar. <strong>Obligatorio completarlo.</strong></td></tr>
+          <tr><td>Tecnicatura</td><td>Ej: <code>Programación</code>, <code>Informática</code>, <code>Electrónica</code></td><td>Solo lo ven alumnos de esa tecnicatura. Dejarlo vacío = visible para todas las tecnicaturas del ciclo técnico.</td></tr>
+          <tr><td>Tipo de recurso</td><td>pdf · link · guia · video · otro</td><td>Ícono y etiqueta en la tarjeta del alumno.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn"><span class="icon">⚠️</span><span>Si el campo <strong>Ciclo</strong> queda vacío, el material no aparece para ningún alumno aunque el año y la tecnicatura sean correctos. Siempre completá <code>basico</code> o <code>tecnico</code>.</span></div>
+
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Completá título y materia</strong><p>El título es lo que ve el alumno. La materia aparece como subtítulo en la tarjeta.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Asigná año, ciclo y tecnicatura</strong><p>Estos tres campos determinan quién puede ver el recurso. Revisá la tabla de segmentación de arriba.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Pegá la URL del recurso</strong><p>Puede ser un link de Google Drive, un PDF público, un video de YouTube o cualquier URL accesible.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Guardá</strong><p>El recurso aparece de inmediato en el panel del alumno correspondiente.</p></div></div>
+      </div>
+
+      <div class="callout tip"><span class="icon">💡</span><span>Para verificar que el material sea visible, iniciá sesión con una cuenta de alumno del año y tecnicatura correspondiente y revisá la pestaña Material.</span></div>
+    </div>
+
+    <!-- 11. ESTADÍSTICAS -->
+    <div class="section" id="estadisticas">
+      <div class="section-header"><div class="section-num">11</div><h2>Estadísticas</h2></div>
+      <p>El módulo de estadísticas muestra indicadores generales del funcionamiento de la biblioteca en tiempo real.</p>
+      <div class="img-placeholder"><img src="../Interfaces/admin estadisticas.PNG" alt="Estadísticas"><span>Panel de estadísticas</span></div>
+      <table>
+        <thead><tr><th>Indicador</th><th>Qué muestra</th></tr></thead>
+        <tbody>
+          <tr><td>📚 Préstamos activos</td><td>Ejemplares actualmente en manos de usuarios.</td></tr>
+          <tr><td>⏱️ Vencidos</td><td>Préstamos cuyo plazo ya expiró y no fueron devueltos.</td></tr>
+          <tr><td>👥 Usuarios activos</td><td>Usuarios con al menos un préstamo en el período.</td></tr>
+          <tr><td>🏷️ Categorías populares</td><td>Las categorías con más préstamos registrados.</td></tr>
+          <tr><td>📈 Evolución mensual</td><td>Préstamos y devoluciones agrupados por mes.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout info"><span class="icon">ℹ️</span><span>Usá las estadísticas para decidir qué libros reponer, qué categorías ampliar y cómo mejorar la rotación del material.</span></div>
+    </div>
+
+    <!-- 12. SEGURIDAD -->
+    <div class="section" id="seguridad">
+      <div class="section-header"><div class="section-num">12</div><h2>Seguridad</h2></div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Cerrá sesión siempre</strong><p>Logout al finalizar tu trabajo para proteger los datos del sistema.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Contraseña segura</strong><p>No la compartas. Cambiala si sospechás que fue comprometida desde Supabase Dashboard → Authentication.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>No uses la service_role key en el frontend</strong><p>La clave pública <em>anon</em> es la única que debe estar en el código del sitio. La <em>service_role</em> nunca debe publicarse.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Respaldo periódico</strong><p>Exportá el inventario y los registros de préstamos desde Supabase Dashboard → Database → Backups.</p></div></div>
+      </div>
+      <div class="callout warn"><span class="icon">⚠️</span><span>Si detectás accesos desconocidos o cambios no autorizados, avisá al responsable de tecnología y cambiá la contraseña de inmediato.</span></div>
+    </div>
+
+    <!-- 13. FAQ -->
+    <div class="section" id="faq">
+      <div class="section-header"><div class="section-num">13</div><h2>Preguntas frecuentes</h2></div>
+      <div class="steps">
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>¿Cómo restablezco la contraseña de un alumno?</strong><p>La contraseña inicial es el DNI. Si el alumno la olvidó, podés restablecerla desde Supabase Dashboard → Authentication → Users → Send password reset.</p></div></div>
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>¿Puedo editar un libro con préstamos activos?</strong><p>Sí, podés actualizar descripción, enlace digital y datos bibliográficos. No des de baja ejemplares que estén prestados o reservados.</p></div></div>
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>El material no aparece para un alumno, ¿qué reviso?</strong><p>Verificá que el material tenga <strong>ciclo</strong> completo (<code>basico</code> o <code>tecnico</code>), que el <strong>año escolar</strong> coincida con el del alumno, y que la <strong>tecnicatura</strong> coincida exactamente con el campo <em>división</em> del curso del alumno en la tabla <code>cursos</code>.</p></div></div>
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>¿Qué hago si un libro está dañado?</strong><p>Registrá la devolución, luego eliminá el ejemplar del inventario desde el módulo de Inventario. El stock disponible se actualiza solo.</p></div></div>
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>¿Por qué un alumno puede entrar como docente o viceversa?</strong><p>No puede: el portal valida que el rol seleccionado en la pantalla de login coincida con el rol real del usuario en la base de datos. Si el DNI no corresponde al rol elegido, se muestra un error.</p></div></div>
+        <div class="step"><div class="step-num">?</div><div class="step-body"><strong>¿Cómo agrego un nuevo administrador?</strong><p>Creá el usuario en Supabase Auth, luego ejecutá en el SQL Editor: <code>UPDATE usuarios SET rol = 'admin', activo = true WHERE lower(email) = lower('email@ejemplo.com');</code></p></div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>
