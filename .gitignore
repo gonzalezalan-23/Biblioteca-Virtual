@@ -48,7 +48,6 @@ supabase/.temp/
 *.sqlite3
 
 # ── Carpetas que no van al repo público ─────────────────────────────────────
-Documentación/
 Manuales/
 Fotos/
 Presentación/

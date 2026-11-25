@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diagrama ER · Biblioteca Virtual EEST N°5</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; color: #1e293b; padding: 2rem; }
+  h1 { font-size: 1.4rem; margin-bottom: .25rem; }
+  p.sub { color: #64748b; font-size: .9rem; margin-bottom: 1.5rem; }
+  .legend { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; font-size: .8rem; color: #475569; }
+  .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+  .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  svg { width: 100%; height: auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; }
+  .note { margin-top: 1.5rem; font-size: .82rem; color: #64748b; max-width: 900px; line-height: 1.6; }
+  @media print { body { background: #fff; padding: 0; } svg { border: none; } }
+</style>
+</head>
+<body>
+
+<h1>Diagrama de Entidades y Relaciones</h1>
+<p class="sub">Biblioteca Virtual · EEST N°5 "Ing. E. S. Ranelagh" · Esquema Supabase (PostgreSQL)</p>
+
+<div class="legend">
+  <span><span class="dot" style="background:#2563eb"></span> Entidad principal</span>
+  <span><span class="dot" style="background:#0ea5e9"></span> Catálogo / referencia</span>
+  <span><span class="dot" style="background:#f59e0b"></span> Movimientos (préstamos/reservas)</span>
+  <span><span class="dot" style="background:#22c55e"></span> Módulo académico</span>
+  <span>──&gt; FK (relación foránea)</span>
+</div>
+
+<svg viewBox="0 0 1150 820" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" fill="none" stroke="#94a3b8" stroke-width="1.2"/>
+    </marker>
+    <style>
+      .tbl { rx: 8; }
+      .hdr { font-size: 13px; font-weight: 700; fill: #fff; }
+      .col { font-size: 11px; fill: #334155; }
+      .pk { font-weight: 700; fill: #1e40af; }
+      .fk { fill: #9a3412; }
+      .line { stroke: #94a3b8; stroke-width: 1.4; fill: none; marker-end: url(#arrow); }
+      .lbl { font-size: 10px; fill: #64748b; }
+    </style>
+  </defs>
+
+  <!-- ═══ CATEGORÍAS ═══ -->
+  <g>
+    <rect class="tbl" x="40" y="40" width="170" height="86" fill="#0ea5e9" opacity="0.08" stroke="#0ea5e9"/>
+    <rect x="40" y="40" width="170" height="26" fill="#0ea5e9" rx="8"/>
+    <rect x="40" y="56" width="170" height="10" fill="#0ea5e9"/>
+    <text class="hdr" x="52" y="58">categorias</text>
+    <text class="col pk" x="52" y="80">🔑 id</text>
+    <text class="col" x="52" y="96">nombre, color, imagen_url</text>
+    <text class="col" x="52" y="112">descripcion</text>
+  </g>
+
+  <!-- ═══ AUTORES ═══ -->
+  <g>
+    <rect class="tbl" x="40" y="170" width="170" height="70" fill="#0ea5e9" opacity="0.08" stroke="#0ea5e9"/>
+    <rect x="40" y="170" width="170" height="26" fill="#0ea5e9" rx="8"/>
+    <rect x="40" y="186" width="170" height="10" fill="#0ea5e9"/>
+    <text class="hdr" x="52" y="188">autores</text>
+    <text class="col pk" x="52" y="210">🔑 id</text>
+    <text class="col" x="52" y="226">apellido, nombre</text>
+  </g>
+
+  <!-- ═══ LIBROS ═══ -->
+  <g>
+    <rect class="tbl" x="330" y="90" width="210" height="130" fill="#2563eb" opacity="0.08" stroke="#2563eb"/>
+    <rect x="330" y="90" width="210" height="26" fill="#2563eb" rx="8"/>
+    <rect x="330" y="106" width="210" height="10" fill="#2563eb"/>
+    <text class="hdr" x="342" y="108">libros</text>
+    <text class="col pk" x="342" y="130">🔑 id</text>
+    <text class="col" x="342" y="146">titulo, isbn, editorial</text>
+    <text class="col fk" x="342" y="162">🔗 id_autor</text>
+    <text class="col fk" x="342" y="178">🔗 id_categoria</text>
+    <text class="col" x="342" y="194">url_drive, palabras_clave</text>
+    <text class="col" x="342" y="210">anio_publicacion, paginas</text>
+  </g>
+
+  <!-- ═══ STOCK ═══ -->
+  <g>
+    <rect class="tbl" x="330" y="270" width="210" height="86" fill="#2563eb" opacity="0.08" stroke="#2563eb"/>
+    <rect x="330" y="270" width="210" height="26" fill="#2563eb" rx="8"/>
+    <rect x="330" y="286" width="210" height="10" fill="#2563eb"/>
+    <text class="hdr" x="342" y="288">stock (ejemplares)</text>
+    <text class="col pk" x="342" y="310">🔑 id</text>
+    <text class="col fk" x="342" y="326">🔗 id_libro</text>
+    <text class="col" x="342" y="342">nro_inventario (UNIQUE)</text>
+  </g>
+
+  <!-- ═══ USUARIOS ═══ -->
+  <g>
+    <rect class="tbl" x="700" y="40" width="210" height="150" fill="#2563eb" opacity="0.08" stroke="#2563eb"/>
+    <rect x="700" y="40" width="210" height="26" fill="#2563eb" rx="8"/>
+    <rect x="700" y="56" width="210" height="10" fill="#2563eb"/>
+    <text class="hdr" x="712" y="58">usuarios</text>
+    <text class="col pk" x="712" y="80">🔑 id</text>
+    <text class="col" x="712" y="96">nombre, apellido, dni</text>
+    <text class="col" x="712" y="112">email, telefono, direccion</text>
+    <text class="col" x="712" y="128">rol (alumno|docente|admin)</text>
+    <text class="col fk" x="712" y="144">🔗 id_curso</text>
+    <text class="col" x="712" y="160">activo (aprobación)</text>
+    <text class="col" x="712" y="176">año_actual</text>
+  </g>
+
+  <!-- ═══ CURSOS ═══ -->
+  <g>
+    <rect class="tbl" x="700" y="240" width="210" height="70" fill="#0ea5e9" opacity="0.08" stroke="#0ea5e9"/>
+    <rect x="700" y="240" width="210" height="26" fill="#0ea5e9" rx="8"/>
+    <rect x="700" y="256" width="210" height="10" fill="#0ea5e9"/>
+    <text class="hdr" x="712" y="258">cursos</text>
+    <text class="col pk" x="712" y="280">🔑 id</text>
+    <text class="col" x="712" y="296">nombre, division</text>
+  </g>
+
+  <!-- ═══ PRESTAMOS ═══ -->
+  <g>
+    <rect class="tbl" x="40" y="400" width="210" height="130" fill="#f59e0b" opacity="0.1" stroke="#f59e0b"/>
+    <rect x="40" y="400" width="210" height="26" fill="#f59e0b" rx="8"/>
+    <rect x="40" y="416" width="210" height="10" fill="#f59e0b"/>
+    <text class="hdr" x="52" y="418">prestamos</text>
+    <text class="col pk" x="52" y="440">🔑 id</text>
+    <text class="col fk" x="52" y="456">🔗 id_stock</text>
+    <text class="col fk" x="52" y="472">🔗 id_usuario</text>
+    <text class="col" x="52" y="488">fecha_prestamo / devolucion</text>
+    <text class="col" x="52" y="504">estado, observaciones</text>
+    <text class="col" x="52" y="520">activo|vencido|devuelto</text>
+  </g>
+
+  <!-- ═══ SOLICITUDES PRESTAMO ═══ -->
+  <g>
+    <rect class="tbl" x="40" y="590" width="240" height="150" fill="#f59e0b" opacity="0.1" stroke="#f59e0b"/>
+    <rect x="40" y="590" width="240" height="26" fill="#f59e0b" rx="8"/>
+    <rect x="40" y="606" width="240" height="10" fill="#f59e0b"/>
+    <text class="hdr" x="52" y="608">solicitudes_prestamo</text>
+    <text class="col pk" x="52" y="630">🔑 id</text>
+    <text class="col fk" x="52" y="646">🔗 id_libro</text>
+    <text class="col" x="52" y="662">dni (vínculo usuario)</text>
+    <text class="col" x="52" y="678">estado (Pend. Retiro…)</text>
+    <text class="col" x="52" y="694">fecha_solicitud (trigger 48h)</text>
+    <text class="col" x="52" y="710">fecha_retiro / devolucion</text>
+    <text class="col" x="52" y="726">nombre/email snapshot</text>
+  </g>
+
+  <!-- ═══ SOLICITUDES EXTENSION ═══ -->
+  <g>
+    <rect class="tbl" x="330" y="590" width="220" height="116" fill="#f59e0b" opacity="0.1" stroke="#f59e0b"/>
+    <rect x="330" y="590" width="220" height="26" fill="#f59e0b" rx="8"/>
+    <rect x="330" y="606" width="220" height="10" fill="#f59e0b"/>
+    <text class="hdr" x="342" y="608">solicitudes_extension</text>
+    <text class="col pk" x="342" y="630">🔑 id</text>
+    <text class="col fk" x="342" y="646">🔗 id_prestamo</text>
+    <text class="col" x="342" y="662">motivo, estado</text>
+    <text class="col" x="342" y="678">Pendiente|Aprobada|Rechazada</text>
+    <text class="col" x="342" y="694">fecha_solicitud</text>
+  </g>
+
+  <!-- ═══ ACADEMICO ═══ -->
+  <g>
+    <rect class="tbl" x="640" y="400" width="220" height="130" fill="#22c55e" opacity="0.1" stroke="#22c55e"/>
+    <rect x="640" y="400" width="220" height="26" fill="#22c55e" rx="8"/>
+    <rect x="640" y="416" width="220" height="10" fill="#22c55e"/>
+    <text class="hdr" x="652" y="418">academico</text>
+    <text class="col pk" x="652" y="440">🔑 id</text>
+    <text class="col" x="652" y="456">apellido, nombre, dni</text>
+    <text class="col fk" x="652" y="472">🔗 id_curso</text>
+    <text class="col" x="652" y="488">anio_lectivo, materia</text>
+    <text class="col" x="652" y="504">tipo (recursar|intensificar)</text>
+    <text class="col" x="652" y="520">turno, observaciones</text>
+  </g>
+
+  <!-- ═══ MATERIAL ESTUDIO ═══ -->
+  <g>
+    <rect class="tbl" x="640" y="590" width="220" height="130" fill="#22c55e" opacity="0.1" stroke="#22c55e"/>
+    <rect x="640" y="590" width="220" height="26" fill="#22c55e" rx="8"/>
+    <rect x="640" y="606" width="220" height="10" fill="#22c55e"/>
+    <text class="hdr" x="652" y="608">material_estudio</text>
+    <text class="col pk" x="652" y="630">🔑 id</text>
+    <text class="col" x="652" y="646">titulo, descripcion, materia</text>
+    <text class="col" x="652" y="662">anio_escolar (1–7), ciclo</text>
+    <text class="col" x="652" y="678">tecnicatura, tipo_recurso</text>
+    <text class="col" x="652" y="694">url_recurso</text>
+    <text class="col" x="652" y="710">fecha_creacion</text>
+  </g>
+
+  <!-- ═══ MATERIALES FAVORITOS ═══ -->
+  <g>
+    <rect class="tbl" x="930" y="590" width="180" height="70" fill="#22c55e" opacity="0.1" stroke="#22c55e"/>
+    <rect x="930" y="590" width="180" height="26" fill="#22c55e" rx="8"/>
+    <rect x="930" y="606" width="180" height="10" fill="#22c55e"/>
+    <text class="hdr" x="942" y="608">materiales_favoritos</text>
+    <text class="col pk" x="942" y="630">🔑 id_usuario</text>
+    <text class="col pk" x="942" y="646">🔑 id_material</text>
+  </g>
+
+  <!-- ═══ LÍNEAS ═══ -->
+  <!-- categorias -> libros -->
+  <path class="line" d="M210,83 C270,83 270,120 330,120"/>
+  <text class="lbl" x="245" y="98">1..N</text>
+
+  <!-- autores -> libros -->
+  <path class="line" d="M210,205 C270,205 270,155 330,155"/>
+  <text class="lbl" x="245" y="195">1..N</text>
+
+  <!-- libros -> stock -->
+  <path class="line" d="M435,220 L435,270"/>
+  <text class="lbl" x="442" y="250">1..N</text>
+
+  <!-- stock -> prestamos -->
+  <path class="line" d="M330,320 C250,320 145,340 145,400"/>
+  <text class="lbl" x="200" y="335">1..N</text>
+
+  <!-- usuarios -> prestamos -->
+  <path class="line" d="M700,120 C500,120 500,260 300,260 C180,260 145,320 145,400"/>
+  <text class="lbl" x="480" y="250">1..N</text>
+
+  <!-- usuarios -> cursos -->
+  <path class="line" d="M805,190 L805,240"/>
+  <text class="lbl" x="812" y="220">N..1</text>
+
+  <!-- libros -> solicitudes_prestamo -->
+  <path class="line" d="M330,190 C260,190 160,300 160,590"/>
+  <text class="lbl" x="185" y="400">1..N</text>
+
+  <!-- prestamos -> solicitudes_extension -->
+  <path class="line" d="M250,470 C300,470 340,500 380,590"/>
+  <text class="lbl" x="295" y="520">1..N</text>
+
+  <!-- cursos -> academico -->
+  <path class="line" d="M910,275 C970,275 970,350 860,400"/>
+  <text class="lbl" x="925" y="330">1..N</text>
+
+  <!-- material -> favoritos -->
+  <path class="line" d="M860,625 L930,625"/>
+  <text class="lbl" x="875" y="618">1..N</text>
+
+  <!-- usuarios -> favoritos -->
+  <path class="line" d="M910,180 C1080,180 1080,560 1020,590"/>
+  <text class="lbl" x="1035" y="380">1..N</text>
+</svg>
+
+<p class="note">
+  <strong>Notas de diseño:</strong><br>
+  • <code>stock</code> representa <strong>un ejemplar físico individual</strong> con su <code>nro_inventario</code> único; el "stock disponible" de un libro se calcula como ejemplares totales menos los prestados/reservados.<br>
+  • <code>solicitudes_prestamo</code> guarda un snapshot de nombre/email porque la reserva puede iniciarse sin cuenta; el <code>dni</code> es el vínculo de reconciliación con <code>usuarios</code>.<br>
+  • <code>usuarios.activo = false</code> significa "cuenta pendiente de aprobación" por la bibliotecaria.<br>
+  • Contraseña inicial de alumnos/docentes: su DNI (gestionada por Supabase Auth, identificada por email).<br>
+  • Todas las FK declaradas habilitan la sintaxis de join <code>tabla(columna)</code> en el cliente JS (PostgREST).
+</p>
+
+</body>
+</html>
