@@ -1,0 +1,62 @@
+# ── Sistema operativo y editores ──────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Dependencias y artefactos generados ───────────────────────
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ── Variables de entorno (NUNCA subir) ────────────────────────
+.env
+.env.*
+!.env.example
+config.local.js
+*.local
+
+# ── Credenciales y claves privadas (NUNCA subir) ──────────────
+# La service_role key de Supabase da acceso total sin RLS.
+# Si alguna vez se filtró, rotarla en Supabase Dashboard inmediatamente.
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+service_role*
+*service-role*
+
+# ── Supabase local y respaldos de base de datos ───────────────
+.supabase/
+supabase/.temp/
+*.dump
+*.bak
+*.backup
+*.sql.gz
+*.sqlite
+*.sqlite3
+
+# ── Carpetas que no van al repo público ─────────────────────────────────────
+Documentación/
+Manuales/
+Fotos/
+Presentación/
+Carpeta de Campo/
+
+# ── NOTA sobre Sistema/assets/js/config.js ────────────────────
+# config.js contiene la URL y la anon key de Supabase.
+# La anon key ES pública por diseño (frontend estático).
+# La seguridad real la provee RLS en el servidor.
+# Por eso config.js NO está en este .gitignore y SÍ se sube.
+# NUNCA pongas la service_role key en config.js.
