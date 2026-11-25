@@ -39,7 +39,7 @@ async function initPublic() {
 async function cargarLibrosPublicos() {
   const { data: librosData, error: errLibros } = await sb
     .from('libros')
-    .select('id,titulo,url_drive,palabras_clave,autores(nombre,apellido),categorias(nombre)')
+    .select('id,titulo,url_drive,palabras_clave,autores(nombre),categorias(nombre)')
     .order('titulo', { ascending: true });
 
   if (errLibros) { console.error('Error cargando libros:', errLibros.message); return; }
@@ -68,7 +68,7 @@ async function cargarLibrosPublicos() {
     return {
       id: b.id,
       titulo: b.titulo,
-      autor: b.autores ? [b.autores.apellido, b.autores.nombre].filter(Boolean).join(', ') : '—',
+      autor: b.autores?.nombre || '—',
       categoria: b.categorias?.nombre || '—',
       descripcion: b.descripcion || '',
       palabrasClave: b.palabras_clave || '',
