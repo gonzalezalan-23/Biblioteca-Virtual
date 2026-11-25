@@ -167,6 +167,10 @@
     /* ===== RESPONSIVE ===== */
     .topbar-menu { display: none; }
 
+    /* Tablas siempre con scroll horizontal */
+    .card { overflow-x: auto; }
+    .data-table { min-width: 520px; }
+
     @media (max-width: 1024px) {
       #sidebar { width: 220px; }
       #main { margin-left: 220px; }
@@ -177,103 +181,123 @@
     }
 
     @media (max-width: 768px) {
-      .topbar-menu { display: flex; flex-direction: row;}
-
-      #sidebar{
-        display: none;
-      }
-     
-      #sidebar.open {
-        position: fixed;
-        left: -260px;
-        width: 260px;
-        transition: left .3s ease;
+      /* Sidebar: oculto por defecto, desliza desde la izquierda */
+      #sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s ease;
         z-index: 100;
-       display: flex;
+        width: 260px;
+        display: flex;
       }
-      #sidebar.open { left: 0; }
+      #sidebar.open { transform: translateX(0); }
 
       #sidebar-overlay {
         display: none;
         position: fixed; inset: 0;
-        background: rgba(0,0,0,.5);
+        background: rgba(0,0,0,.45);
         z-index: 99;
+        backdrop-filter: blur(2px);
       }
       #sidebar-overlay.active { display: block; }
 
       #main { margin-left: 0; }
 
       .topbar {
-        padding: 1rem;
-        gap: 1rem;
+        padding: .75rem 1rem;
+        gap: .75rem;
       }
-      .topbar h1 { font-size: 1.1rem; }
+      .topbar h1 { font-size: 1rem; flex: 1; }
       .topbar-date { display: none; }
+      .topbar-menu {
+        display: flex;
+        align-items: center;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        width: 36px; height: 36px;
+        justify-content: center;
+        font-size: 1.1rem;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
 
       .page-content { padding: 1rem; }
 
+      /* Filter bar: apila en columna, cada control ocupa el ancho completo */
       .filter-bar {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: .5rem;
+        align-items: stretch;
       }
+      .filter-bar .form-input,
+      .filter-bar .search-wrap { width: 100%; max-width: none !important; }
       .search-wrap { min-width: unset; }
-      .search-wrap input { width: 100%; }
 
       .form-grid { grid-template-columns: 1fr; }
-
       .kpi-grid { grid-template-columns: 1fr 1fr; }
 
+      /* Loan cards */
       .loan-card {
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: .75rem;
         align-items: flex-start;
       }
       .loan-actions {
         width: 100%;
-        justify-content: stretch;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: .5rem;
       }
       .loan-actions .btn {
-        width: 100%;
+        flex: 1;
+        min-width: 120px;
         justify-content: center;
       }
 
       .card { padding: 1rem; }
-      .card-sm { padding: 0.75rem; }
+      .card-sm { padding: .75rem; }
 
-      .data-table { font-size: 0.75rem; }
-      .data-table th { padding: 0.5rem 0.75rem; }
-      .data-table td { padding: 0.6rem 0.75rem; }
+      /* Tablas: scroll horizontal dentro del card */
+      .card { overflow-x: auto; }
+      .data-table { font-size: .78rem; min-width: 480px; }
+      .data-table th { padding: .5rem .75rem; }
+      .data-table td { padding: .6rem .75rem; }
 
-      /* Modal responsive */
-      .modal-content { width: 90vw; max-height: 90vh; }
+      /* Formularios de alta: grids de 4 columnas → 1 columna */
+      [style*="grid-template-columns:2fr 1fr 1fr 1fr"],
+      [style*="grid-template-columns:1fr 1fr 2fr"] {
+        display: flex !important;
+        flex-direction: column !important;
+      }
     }
 
     @media (max-width: 480px) {
-      .topbar { flex-direction: row; align-items: flex-start; }
-      .topbar h1 { font-size: 1rem; }
+      .topbar h1 { font-size: .9rem; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
 
-      .kpi-grid { grid-template-columns: 1fr; }
+      .loan-card { padding: .85rem; }
+      .loan-avatar { width: 38px; height: 38px; font-size: .85rem; }
+      .loan-name { font-size: .875rem; }
+      .loan-meta { font-size: .75rem; }
+      .loan-actions .btn { font-size: .78rem; padding: .45rem .7rem; }
 
-      .loan-card { padding: 1rem; }
-      .loan-avatar { width: 40px; height: 40px; }
-      .loan-name { font-size: 0.9rem; }
-      .loan-meta { font-size: 0.75rem; }
+      .btn { padding: .5rem .85rem; font-size: .8rem; }
+      .card { padding: .85rem; }
 
-      .btn { padding: 0.5rem 0.85rem; font-size: 0.8rem; }
-      .card { padding: 0.85rem; }
+      .data-table { font-size: .72rem; }
+      .data-table th { padding: .4rem .5rem; }
+      .data-table td { padding: .5rem; }
 
-      .data-table { font-size: 0.7rem; }
-      .data-table th { padding: 0.4rem 0.5rem; }
-      .data-table td { padding: 0.5rem; }
+      .sidebar-logo h2 { font-size: .9rem; }
+      .nav-item { padding: .5rem .5rem; font-size: .8rem; }
+      .nav-item .icon { font-size: .9rem; }
 
-      .sidebar-logo h2 { font-size: 0.9rem; }
-      .nav-item { padding: 0.5rem 0.5rem; font-size: 0.8rem; }
-      .nav-item .icon { font-size: 0.9rem; }
+      /* Modales: padding reducido */
+      .modal-content { width: 95vw; max-height: 92vh; }
     }
 
     @media (max-height: 600px) {
-      .sidebar-logo { padding: 1rem 1rem 0.75rem; }
-      nav { padding: 0.75rem 0.5rem; }
-      .sidebar-footer { padding: 0.75rem 0.5rem 1rem; }
+      .sidebar-logo { padding: 1rem 1rem .75rem; }
+      nav { padding: .75rem .5rem; }
+      .sidebar-footer { padding: .75rem .5rem 1rem; }
     }

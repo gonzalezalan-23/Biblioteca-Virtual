@@ -86,6 +86,7 @@
   </aside>
 
   <!-- MAIN -->
+  <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
   <div id="main">
     <div class="topbar">
       <h1 id="topbar-title">Gestión de Préstamos</h1>
@@ -319,7 +320,7 @@
           </div>
 
           <!-- Fila 3: Editorial · Edición · Año · Páginas -->
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.75rem;margin-bottom:1rem;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-bottom:1rem;">
             <div>
               <label class="form-label">Editorial *</label>
               <input class="form-input" id="inv-editorial" type="text" placeholder="Ej: Sudamericana" />
@@ -339,7 +340,7 @@
           </div>
 
           <!-- Fila 4: ISBN · Link PDF · Palabras clave -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:.75rem;margin-bottom:1rem;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1rem;">
             <div>
               <label class="form-label">ISBN</label>
               <input class="form-input" id="inv-isbn" type="text" placeholder="978-0553802023" />
