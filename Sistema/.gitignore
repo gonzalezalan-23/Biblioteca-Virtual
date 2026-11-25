@@ -1,0 +1,17 @@
+# Editores y sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Dependencias (si alguien usa npx serve localmente)
+node_modules/
+
+# Configuración local con credenciales propias
+config.local.js
+
+# NOTA: assets/js/config.js SÍ se sube.
+# Contiene la URL y la anon key de Supabase, que son públicas por diseño.
+# NUNCA pongas la service_role key en ese archivo.

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso Alumnos y Docentes · EEST N°5</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex justify-center p-4 font-sans">
+
+  <!-- my-auto centra el panel y, si la pantalla no alcanza, colapsa a 0 en vez
+       de cortar la parte de arriba fuera del scroll (problema de flex center) -->
+  <div class="w-full max-w-md my-auto py-4">
+
+    <!-- ══ PANEL LOGIN ══ -->
+    <div id="panel-login" class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl px-4 py-5 sm:p-7 shadow-2xl">
+
+      <!-- Logo -->
+      <div class="flex flex-col items-center mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white text-xl font-serif shadow-lg shadow-blue-600/40 mb-3">B</div>
+        <h1 class="text-white text-xl font-serif">Portal de Usuarios</h1>
+        <p class="text-white/40 text-xs mt-1">EEST N°5 · Ranelagh, Berazategui</p>
+      </div>
+
+      <!-- Aviso institucional -->
+      <p class="text-xs text-white/30 text-center block mb-4 leading-relaxed">
+        🏫 El inicio de sesión y registro es de uso exclusivo para el personal y alumnado de la institución.
+      </p>
+
+      <!-- Selector de rol -->
+      <div class="flex gap-2 mb-4 bg-white/5 p-1 rounded-xl">
+        <button id="btn-rol-alumno" onclick="setRol('alumno')"
+          class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-blue-600 text-white shadow">
+          🎒 Alumno
+        </button>
+        <button id="btn-rol-docente" onclick="setRol('docente')"
+          class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-white/50 hover:text-white/80">
+          👩🏫 Docente
+        </button>
+      </div>
+
+      <!-- Formulario login -->
+      <div class="space-y-3">
+        <div>
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-2">DNI</label>
+          <input id="login-dni" type="text" inputmode="numeric" maxlength="8" placeholder="Ej: 45123456"
+            class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200 text-sm" />
+        </div>
+        <div class="relative">
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-2">Contraseña</label>
+          <input id="login-pwd" type="password" placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200 text-sm" />
+          <button onclick="togglePwd()" class="absolute right-3 bottom-3 text-white/30 hover:text-white/60 transition-colors text-lg" aria-label="Mostrar contraseña">👁</button>
+        </div>
+
+        <div id="login-error" class="hidden bg-red-500/15 border border-red-500/30 text-red-300 text-sm rounded-xl px-4 py-3"></div>
+
+        <button onclick="doPortalLogin()"
+          class="w-full py-3 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold rounded-xl
+                 transition-all duration-200 shadow-lg shadow-blue-600/30 mt-2">
+          Ingresar →
+        </button>
+      </div>
+
+      <!-- Info contraseña predeterminada -->
+      <div class="mt-4 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-2.5 text-amber-200/70 text-xs leading-relaxed">
+        🔑 La contraseña inicial es tu DNI. Te recomendamos cambiarla desde tu panel una vez que ingreses.
+      </div>
+
+      <!-- Link a registro -->
+      <div class="mt-4 text-center">
+        <button onclick="mostrarRegistro()"
+          class="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors underline underline-offset-2">
+          ¿No tenés cuenta? Solicitá el acceso aquí
+        </button>
+      </div>
+
+      <!-- Volver -->
+      <a href="index.html" class="flex items-center justify-center gap-1 mt-4 text-white/30 hover:text-white/60 text-sm transition-colors">
+        ← Volver al catálogo público
+      </a>
+    </div>
+
+    <!-- ══ PANEL REGISTRO ══ -->
+    <div id="panel-registro" class="hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl px-4 py-5 sm:p-7 shadow-2xl">
+
+      <!-- Cabecera -->
+      <div class="flex flex-col items-center mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white text-xl font-serif shadow-lg shadow-blue-600/40 mb-3">B</div>
+        <h1 class="text-white text-xl font-serif">Solicitar Acceso</h1>
+        <p class="text-white/40 text-xs mt-1 text-center">Completá tus datos para que la bibliotecaria habilite tu cuenta</p>
+      </div>
+
+      <!-- Selector de rol -->
+      <div class="flex gap-2 mb-4 bg-white/5 p-1 rounded-xl">
+        <button id="reg-btn-alumno" onclick="setRolRegistro('alumno')"
+          class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-blue-600 text-white shadow">
+          🎒 Alumno
+        </button>
+        <button id="reg-btn-docente" onclick="setRolRegistro('docente')"
+          class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-white/50 hover:text-white/80">
+          👩🏫 Docente
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+
+        <!-- Nombre + Apellido -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Nombre *</label>
+            <input id="reg-nombre" type="text" placeholder="Ej: Lucía"
+              oninput="this.value=this.value.replace(/[^a-zA-ZÀ-ɏ\s'\-]/g,'')"
+              class="w-full px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                     focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+          </div>
+          <div>
+            <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Apellido *</label>
+            <input id="reg-apellido" type="text" placeholder="Ej: Méndez"
+              oninput="this.value=this.value.replace(/[^a-zA-ZÀ-ɏ\s'\-]/g,'')"
+              class="w-full px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                     focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+          </div>
+        </div>
+
+        <!-- DNI -->
+        <div>
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">DNI *</label>
+          <input id="reg-dni" type="text" inputmode="numeric" maxlength="8" placeholder="Ej: 45123456"
+            oninput="this.value=this.value.replace(/\D/g,'')"
+            class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Email *</label>
+          <input id="reg-email" type="email" placeholder="tu.email@gmail.com"
+            class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+        </div>
+
+        <!-- Teléfono -->
+        <div>
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Teléfono</label>
+          <input id="reg-telefono" type="tel" placeholder="Ej: 11-2345-6789"
+            class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+        </div>
+
+        <!-- Dirección -->
+        <div>
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Dirección / Domicilio *</label>
+          <input id="reg-direccion" type="text" placeholder="Ej: Av. Mitre 1234, Ranelagh"
+            class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/30
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm" />
+        </div>
+
+        <!-- Curso (solo alumnos) -->
+        <div id="reg-campo-curso">
+          <label class="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">Curso *</label>
+          <select id="reg-curso-id"
+            class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white
+                   focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all text-sm
+                   appearance-none cursor-pointer">
+            <option value="" class="bg-slate-800">Cargando cursos…</option>
+          </select>
+        </div>
+
+        <!-- Mensaje de error / éxito -->
+        <div id="reg-msg" class="hidden text-sm rounded-xl px-4 py-3"></div>
+
+        <button onclick="enviarSolicitudRegistro()"
+          class="w-full py-3 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold rounded-xl
+                 transition-all duration-200 shadow-lg shadow-blue-600/30 mt-1">
+          Enviar solicitud →
+        </button>
+      </div>
+
+      <!-- Info -->
+      <div class="mt-4 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-2.5 text-blue-200/70 text-xs leading-relaxed">
+        📋 Tu solicitud quedará pendiente hasta que la bibliotecaria apruebe tu cuenta. Una vez aprobada, podrás ingresar con tu DNI como contraseña inicial.
+      </div>
+
+      <!-- Volver al login -->
+      <button onclick="mostrarLogin()"
+        class="flex items-center justify-center gap-1 mt-4 w-full text-white/30 hover:text-white/60 text-sm transition-colors">
+        ← Volver al inicio de sesión
+      </button>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/portal.js"></script>
+  <script>
+    /* ── Cargar cursos desde Supabase ─────────── */
+    async function cargarCursos() {
+      const sel = document.getElementById('reg-curso-id');
+      const { data, error } = await sb
+        .from('cursos')
+        .select('id, nombre, division')
+        .neq('nombre', 'Docente')
+        .order('nombre')
+        .order('division');
+
+      sel.innerHTML = '<option value="" class="bg-slate-800">-- Seleccioná tu curso --</option>';
+
+      if (error || !data?.length) {
+        sel.innerHTML += '<option value="" disabled class="bg-slate-800">No hay cursos disponibles</option>';
+        return;
+      }
+
+      data.forEach(c => {
+        const label = c.division ? `${c.nombre} ${c.division}` : c.nombre;
+        sel.innerHTML += `<option value="${c.id}" class="bg-slate-800 text-white">${label}</option>`;
+      });
+    }
+
+    cargarCursos();
+
+    /* ── Alternar paneles ─────────────────────── */
+    function mostrarRegistro() {
+      document.getElementById('panel-login').classList.add('hidden');
+      document.getElementById('panel-registro').classList.remove('hidden');
+    }
+    function mostrarLogin() {
+      document.getElementById('panel-registro').classList.add('hidden');
+      document.getElementById('panel-login').classList.remove('hidden');
+      document.getElementById('reg-msg').classList.add('hidden');
+    }
+
+    /* ── Selector de rol en registro ─────────── */
+    let rolRegistro = 'alumno';
+    function setRolRegistro(rol) {
+      rolRegistro = rol;
+      const esAlumno = rol === 'alumno';
+      document.getElementById('reg-btn-alumno').className =
+        'flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ' +
+        (esAlumno ? 'bg-blue-600 text-white shadow' : 'text-white/50 hover:text-white/80');
+      document.getElementById('reg-btn-docente').className =
+        'flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ' +
+        (!esAlumno ? 'bg-blue-600 text-white shadow' : 'text-white/50 hover:text-white/80');
+      document.getElementById('reg-campo-curso').classList.toggle('hidden', !esAlumno);
+      // Limpiar errores, campos y estado del botón al cambiar de rol
+      const msg = document.getElementById('reg-msg');
+      msg.classList.add('hidden');
+      msg.textContent = '';
+      const btn = document.querySelector('#panel-registro button[onclick="enviarSolicitudRegistro()"]');
+      if (btn) { btn.disabled = false; btn.textContent = 'Enviar solicitud →'; }
+      ['reg-nombre','reg-apellido','reg-dni','reg-email','reg-telefono','reg-direccion','reg-curso-id']
+        .forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.value = '';
+          el.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+          el.classList.add('border-white/20');
+        });
+    }
+
+    /* ── Mensaje de feedback ──────────────────── */
+    function regMsg(tipo, texto) {
+      const el = document.getElementById('reg-msg');
+      el.className = 'text-sm rounded-xl px-4 py-3 ' + (
+        tipo === 'error'   ? 'bg-red-500/15 border border-red-500/30 text-red-300' :
+        tipo === 'success' ? 'bg-green-500/15 border border-green-500/30 text-green-300' :
+                             'bg-blue-500/15 border border-blue-500/20 text-blue-300'
+      );
+      el.textContent = texto;
+      el.classList.remove('hidden');
+    }
+
+    /* ── Enviar solicitud de registro ─────────── */
+    async function enviarSolicitudRegistro() {
+      const nombre   = document.getElementById('reg-nombre').value.trim();
+      const apellido = document.getElementById('reg-apellido').value.trim();
+      const dni      = document.getElementById('reg-dni').value.trim();
+      const email    = document.getElementById('reg-email').value.trim();
+      const telefono  = document.getElementById('reg-telefono').value.trim();
+      const direccion = document.getElementById('reg-direccion').value.trim();
+      const idCurso   = rolRegistro === 'alumno' ? document.getElementById('reg-curso-id').value : null;
+
+      // Validaciones
+      if (!nombre)   return regMsg('error', 'El nombre es obligatorio.');
+      if (!apellido) return regMsg('error', 'El apellido es obligatorio.');
+      if (!dni || dni.length < 7 || /^0+$/.test(dni))
+        return regMsg('error', 'DNI inválido. Debe tener entre 7 y 8 dígitos.');
+      if (!email || !email.includes('@'))
+        return regMsg('error', 'Ingresá un email válido.');
+      if (!direccion)
+        return regMsg('error', 'La dirección es obligatoria.');
+      if (rolRegistro === 'alumno' && !idCurso)
+        return regMsg('error', 'Seleccioná tu curso.');
+
+      const btn = document.querySelector('#panel-registro button[onclick="enviarSolicitudRegistro()"]');
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+
+      try {
+        // 1. Verificar que el DNI no esté ya registrado (RPC segura: no volca la tabla usuarios)
+        const dniStr = String(document.getElementById('reg-dni').value).trim().replace(/\D/g, '');
+        const { data: estadoDni } = await sb.rpc('dni_registrado', { p_dni: dniStr });
+
+        if (estadoDni && estadoDni !== 'libre') {
+          btn.disabled = false;
+          btn.textContent = 'Enviar solicitud →';
+          if (estadoDni === 'pendiente') {
+            return regMsg('info', '⏳ Tu solicitud ya fue enviada y está pendiente de aprobación.');
+          }
+          return regMsg('error', 'Este DNI ya tiene una cuenta activa. Iniciá sesión directamente.');
+        }
+
+        // 2. Insertar usuario con activo = false (pendiente de aprobación)
+        const { error: errInsert } = await sb
+          .from('usuarios')
+          .insert([{
+            nombre:      capitalize(nombre),
+            apellido:    capitalize(apellido),
+            dni:         dniStr,
+            email:       email.trim().toLowerCase(),
+            telefono:    telefono || null,
+            direccion:   direccion,
+            rol:         rolRegistro,
+            id_curso:    idCurso ? parseInt(idCurso, 10) : null,
+            activo:      false,
+          }]);
+
+        if (errInsert) {
+          console.error('[REGISTRO] Insert error:', errInsert);
+          btn.disabled = false;
+          btn.textContent = 'Enviar solicitud →';
+          if (errInsert.code === '23505') {
+            return regMsg('error', 'El DNI o email ingresado ya se encuentra registrado. Si creés que es un error, contactá a la bibliotecaria.');
+          }
+          throw errInsert;
+        }
+
+        // Éxito
+        regMsg('success', '✅ Solicitud enviada. La bibliotecaria revisará tu pedido y habilitará tu acceso pronto.');
+        // Limpiar formulario
+        ['reg-nombre','reg-apellido','reg-dni','reg-email','reg-telefono','reg-direccion']
+          .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('reg-curso-id').value = '';
+        btn.textContent = 'Solicitud enviada ✓';
+
+      } catch (err) {
+        console.error('[REGISTRO]', err);
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud →';
+        if (err.code === '23505') {
+          regMsg('error', 'El DNI o email ingresado ya se encuentra registrado. Si creés que es un error, contactá a la bibliotecaria.');
+        } else {
+          regMsg('error', 'Hubo un problema al enviar la solicitud. Intentá nuevamente.');
+        }
+      }
+    }
+
+    function capitalize(str) {
+      return str.toLowerCase().replace(/(?:^|\s|-)\S/g, c => c.toUpperCase());
+    }
+  </script>
+</body>
+</html>

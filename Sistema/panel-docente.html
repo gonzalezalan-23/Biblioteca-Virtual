@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Panel · Docente · EEST N°5</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-50 font-sans">
+
+  <!-- TOPBAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-serif text-lg shadow shadow-indigo-600/30">B</div>
+          <div>
+            <p class="text-xs text-slate-400 leading-none">EEST N°5 · Docente</p>
+            <p class="font-semibold text-slate-800 text-sm leading-none mt-0.5" id="docente-nombre">—</p>
+          </div>
+        </div>
+        <a href="index.html"
+          class="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-indigo-600 bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 px-2.5 py-1.5 rounded-lg transition-all duration-200 ml-1"
+          aria-label="Volver a la página principal">
+          🏠 <span>Inicio</span>
+        </a>
+      </div>
+      <nav class="hidden sm:flex gap-1">
+        <button onclick="showTabDocente('prestamos')" id="dtab-prestamos"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition-all tab-btn active-tab">
+          📚 Mis Préstamos
+        </button>
+        <button onclick="showTabDocente('solicitar')" id="dtab-solicitar"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition-all tab-btn">
+          ➕ Solicitar Libros
+        </button>
+        <button onclick="showTabDocente('cuenta')" id="dtab-cuenta"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition-all tab-btn">
+          🔒 Mi Cuenta
+        </button>
+      </nav>
+      <select onchange="showTabDocente(this.value)" class="sm:hidden text-sm border border-slate-200 rounded-lg px-2 py-1.5 bg-white text-slate-700">
+        <option value="prestamos">📚 Préstamos</option>
+        <option value="solicitar">➕ Solicitar</option>
+        <option value="cuenta">🔒 Cuenta</option>
+      </select>
+
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6">
+
+    <!-- ══ TAB: PRÉSTAMOS ══ -->
+    <div id="dpanel-prestamos" class="tab-panel">
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-400 mb-1">Préstamos activos</p>
+          <p class="text-2xl font-bold text-slate-800" id="dkpi-activos">—</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-400 mb-1">Solicitudes pendientes</p>
+          <p class="text-2xl font-bold text-amber-500" id="dkpi-pendientes">—</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-400 mb-1">Historial total</p>
+          <p class="text-2xl font-bold text-slate-800" id="dkpi-total">—</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100">
+          <h2 class="font-semibold text-slate-800">Historial de Préstamos y Solicitudes</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
+              <tr>
+                <th class="px-5 py-3 text-left">Libro</th>
+                <th class="px-4 py-3 text-left">Tipo</th>
+                <th class="px-4 py-3 text-left">Estado</th>
+                <th class="px-4 py-3 text-left hidden sm:table-cell">Fecha</th>
+                <th class="px-4 py-3 text-left hidden md:table-cell">Observación</th>
+                <th class="px-4 py-3 text-center">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-prestamos-docente" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+        <p id="empty-prestamos-docente" class="hidden text-center text-slate-400 text-sm py-10">No tenés préstamos registrados.</p>
+      </div>
+    </div>
+
+    <!-- ══ TAB: SOLICITAR LIBROS ══ -->
+    <div id="dpanel-solicitar" class="tab-panel hidden">
+      <div class="max-w-2xl mx-auto">
+
+        <!-- Tipo de solicitud -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-4">
+          <h2 class="font-semibold text-slate-800 mb-4">Nueva Solicitud de Libros</h2>
+
+          <div class="flex gap-2 mb-6 bg-slate-50 p-1 rounded-xl">
+            <button id="btn-tipo-personal" onclick="setTipoSolicitud('personal')"
+              class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-600 shadow border border-slate-200">
+              👤 Uso personal
+            </button>
+            <button id="btn-tipo-clase" onclick="setTipoSolicitud('clase')"
+              class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-slate-400 hover:text-slate-600">
+              👥 Lote para clase
+            </button>
+          </div>
+
+          <div class="space-y-4">
+
+            <!-- Búsqueda de libro -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Libro *</label>
+              <input id="sol-libro-buscar" name="docente-libro-busqueda" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribí el título del libro…"
+                oninput="buscarLibroSolicitud(this.value)"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+              <div id="sol-libro-resultados" class="hidden mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden max-h-48 overflow-y-auto"></div>
+              <input type="hidden" id="sol-libro-id" />
+              <p id="sol-libro-seleccionado" class="hidden mt-2 text-xs text-indigo-600 font-medium bg-indigo-50 rounded-lg px-3 py-1.5"></p>
+            </div>
+
+            <!-- Cantidad (solo para lote) -->
+            <div id="campo-cantidad" class="hidden">
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Cantidad de ejemplares *</label>
+              <input id="sol-cantidad" type="number" min="1" max="40" value="1" placeholder="Ej: 20"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+            </div>
+
+            <!-- Materia (solo para lote) -->
+            <div id="campo-materia" class="hidden">
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Materia / Curso *</label>
+              <input id="sol-materia" name="docente-materia-curso" type="text" autocomplete="off" autocapitalize="off" placeholder="Ej: Física 4° TM — 2025"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+            </div>
+
+            <!-- Fecha estimada de uso -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Fecha estimada de uso</label>
+              <input id="sol-fecha" type="date"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+            </div>
+
+            <!-- Observaciones -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Observaciones</label>
+              <textarea id="sol-obs" name="docente-observaciones-solicitud" autocomplete="off" placeholder="Detalles adicionales para la bibliotecaria…"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm resize-none focus:outline-none focus:border-indigo-400 transition-colors"></textarea>
+            </div>
+
+            <div id="sol-msg" class="hidden text-sm rounded-xl px-4 py-2.5"></div>
+
+            <button onclick="enviarSolicitudDocente()"
+              class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-all duration-200 active:scale-95 shadow-lg shadow-indigo-600/20">
+              Enviar solicitud a biblioteca
+            </button>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 text-amber-700 text-sm">
+          📌 Las solicitudes quedan en estado <strong>Pendiente</strong> hasta que la bibliotecaria confirme la disponibilidad y prepare los ejemplares.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: MI CUENTA ══ -->
+    <div id="dpanel-cuenta" class="tab-panel hidden">
+      <div class="max-w-md mx-auto">
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-4">
+          <h2 class="font-semibold text-slate-800 mb-4">Mis datos</h2>
+          <div class="space-y-2 text-sm text-slate-600">
+            <div class="flex justify-between"><span class="text-slate-400">Nombre</span><span id="dinfo-nombre" class="font-medium">—</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">DNI</span><span id="dinfo-dni" class="font-medium">—</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Email</span><span id="dinfo-email" class="font-medium">—</span></div>
+          </div>
+        </div>
+
+        <!-- Cerrar sesión -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-4">
+          <button onclick="document.getElementById('modal-logout-docente').classList.remove('hidden')"
+            class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 border border-red-200 transition-all duration-200">
+            🚪 Cerrar sesión
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <h2 class="font-semibold text-slate-800 mb-1">Cambiar contraseña</h2>
+          <p class="text-xs text-slate-400 mb-5">Recomendamos cambiar la contraseña predeterminada (tu DNI).</p>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Nueva contraseña</label>
+              <input id="dpwd-nueva" type="password" placeholder="Mínimo 6 caracteres"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Confirmar contraseña</label>
+              <input id="dpwd-confirmar" type="password" placeholder="Repetí la contraseña"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-indigo-400 transition-colors" />
+            </div>
+            <div id="dpwd-msg" class="hidden text-sm rounded-xl px-4 py-2.5"></div>
+            <button onclick="cambiarPasswordDocente()"
+              class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-all duration-200 active:scale-95">
+              Actualizar contraseña
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal: Solicitar Extensión (mismo modal que el panel del alumno) -->
+  <div id="modal-extension" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onclick="cerrarModalExtension(event)">
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl" onclick="event.stopPropagation()">
+      <h3 class="font-semibold text-slate-800 mb-1">Solicitar extensión</h3>
+      <p class="text-sm text-slate-400 mb-4" id="ext-libro-titulo">—</p>
+      <input type="hidden" id="ext-prestamo-id" />
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Motivo *</label>
+        <textarea id="ext-motivo" rows="3" placeholder="Ej: Necesito más tiempo para preparar la clase…"
+          class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm resize-none focus:outline-none focus:border-indigo-400 transition-colors"></textarea>
+      </div>
+      <div id="ext-msg" class="hidden text-sm rounded-xl px-4 py-2.5 mb-3"></div>
+      <div class="flex gap-3">
+        <button onclick="enviarExtension()" id="ext-btn-enviar"
+          class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-all duration-200">
+          Enviar solicitud
+        </button>
+        <button onclick="document.getElementById('modal-extension').classList.add('hidden')"
+          class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-all duration-200">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirmación cerrar sesión -->
+  <div id="modal-logout-docente" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full">
+      <p class="font-semibold text-slate-800 mb-1">¿Cerrar sesión?</p>
+      <p class="text-sm text-slate-500 mb-5">Vas a salir de tu cuenta docente.</p>
+      <div class="flex gap-3">
+        <button onclick="document.getElementById('modal-logout-docente').classList.add('hidden')"
+          class="flex-1 py-2.5 rounded-xl text-sm font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">
+          Cancelar
+        </button>
+        <button onclick="doPortalLogout()"
+          class="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-red-600 hover:bg-red-500 text-white transition-colors">
+          Sí, salir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .tab-btn { color: #64748b; }
+    .active-tab { background: #eef2ff; color: #4f46e5; font-weight: 600; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/config.js"></script>
+<script src="assets/js/db.js"></script>
+<script src="assets/js/portal.js"></script>
+  <script>initPanelDocente();</script>
+</body>
+</html>

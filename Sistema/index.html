@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BibliotecaEEST N°5 · Ranelagh</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav id="navbar" role="navigation" aria-label="Navegación principal">
+  <a class="nav-logo group" href="#" aria-label="Inicio BibliotecaEEST N°5">
+    <div class="nav-logo-icon" aria-hidden="true">B</div>
+    <span class="nav-logo-text">BibliotecaEEST N°5</span>
+  </a>
+
+  <div class="nav-links" role="menubar">
+    <a class="nav-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#" role="menuitem">Inicio</a>
+    <a class="nav-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#categorias" role="menuitem">Categorías</a>
+    <a class="nav-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#destacados" role="menuitem">Catálogo</a>
+    <a class="nav-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#como-funciona" role="menuitem">¿Cómo funciona?</a>
+  </div>
+
+  <div class="nav-right">
+    <a id="btn-login-nav" href="portal-login.html" class="btn-login" aria-label="Iniciar sesión en el portal">
+      <span aria-hidden="true">👤</span> Iniciar Sesión
+    </a>
+    <a id="btn-mi-panel" href="#" class="btn-login" style="display:none" aria-label="Acceder a mi panel">
+      <span aria-hidden="true">🏠</span> Mi Panel
+    </a>
+    <button class="btn-hamburger" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" role="menu" aria-label="Menú móvil">
+  <a class="mobile-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#" role="menuitem">Inicio</a>
+  <a class="mobile-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#categorias" role="menuitem">Categorías</a>
+  <a class="mobile-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#destacados" role="menuitem">Catálogo</a>
+  <a class="mobile-link transition-all duration-300 ease-in-out hover:text-blue-600 hover:scale-105" href="#como-funciona" role="menuitem">¿Cómo funciona?</a>
+  <a id="btn-login-mobile" href="portal-login.html" class="btn-login-mobile">👤 Iniciar Sesión</a>
+  <a id="btn-mi-panel-mobile" href="#" class="btn-login-mobile" style="display:none">🏠 Mi Panel</a>
+</div>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero" aria-label="Sección principal">
+  <div class="blob blob-1" aria-hidden="true"></div>
+  <div class="blob blob-2" aria-hidden="true"></div>
+  <div class="blob blob-3" aria-hidden="true"></div>
+
+  <div class="hero-badge" aria-label="Sistema de gestión">
+    <span>✦</span> EESTN5 · Biblioteca Escolar Digital
+  </div>
+
+  <h1 class="hero-h1">
+    <span class="dark">El futuro del aprendizaje<br>comienza </span><span class="accent">en nuestra</span><br>
+    <span class="gradient">biblioteca</span>
+  </h1>
+
+  <p class="hero-sub">
+    Accedé a miles de títulos, gestioná préstamos en tiempo real y explorá categorías desde cualquier dispositivo.
+  </p>
+
+  <div class="search-bar" role="search">
+    <div class="search-bar-inner">
+      <span aria-hidden="true" style="color:#94a3b8;font-size:1.1rem;">🔍</span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Historia de Roma, algoritmos, Borges…"
+        aria-label="Buscar libros"
+        oninput="doSearch(this.value)"
+        onkeydown="if(event.key==='Enter') doSearch(this.value)"
+      />
+    </div>
+    <button class="search-bar-btn" onclick="doSearch(document.getElementById('search-input').value)" aria-label="Buscar">
+      Buscar →
+    </button>
+  </div>
+
+  <div id="search-results" role="region" aria-live="polite" aria-label="Resultados de búsqueda"></div>
+</section>
+
+<!-- ═══════════════════ CATEGORÍAS 3D ═══════════════════ -->
+<section id="categorias" aria-label="Explorar por categoría">
+  <div class="section-eyebrow">
+    <span>Explorar por Categoría</span>
+    <div class="eyebrow-line" aria-hidden="true"></div>
+  </div>
+
+  <div class="carousel-wrap" role="region" aria-label="Carrusel de categorías" aria-roledescription="carrusel">
+    <div class="carousel-track" id="carousel-track"></div>
+  </div>
+
+  <div class="carousel-nav">
+    <button class="carousel-arrow" onclick="carouselPrev()" aria-label="Categoría anterior">←</button>
+    <div id="carousel-dots" style="display:flex;gap:.5rem;" role="tablist" aria-label="Indicadores de categoría"></div>
+    <button class="carousel-arrow" onclick="carouselNext()" aria-label="Categoría siguiente">→</button>
+  </div>
+</section>
+
+<!-- ═══════════════════ CÓMO FUNCIONA ═══════════════════ -->
+<section id="como-funciona">
+  <div class="section-eyebrow">
+    <span>¿Cómo Funciona?</span>
+    <div class="eyebrow-line" aria-hidden="true"></div>
+  </div>
+  <div class="mt-12 max-w-4xl mx-auto flex flex-col md:flex-row items-start justify-center gap-8 md:gap-0">
+
+    <div class="step flex-1 min-w-0 text-center px-6">
+      <div class="step-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);" aria-hidden="true">🔍</div>
+      <div class="step-num" aria-hidden="true">1</div>
+      <div class="step-title">Buscá un libro</div>
+      <p class="step-desc">Usá el buscador para encontrar el título que necesitás por nombre, autor o categoría en segundos.</p>
+    </div>
+
+    <div class="step-arrow hidden md:flex self-center text-2xl text-slate-300 flex-shrink-0 px-2 -mt-12" aria-hidden="true">→</div>
+
+    <div class="step flex-1 min-w-0 text-center px-6">
+      <div class="step-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);" aria-hidden="true">📋</div>
+      <div class="step-num" aria-hidden="true">2</div>
+      <div class="step-title">Solicitá el préstamo</div>
+      <p class="step-desc">Registrá tu solicitud con tus datos de alumno. La bibliotecaria confirma la disponibilidad.</p>
+    </div>
+
+    <div class="step-arrow hidden md:flex self-center text-2xl text-slate-300 flex-shrink-0 px-2 -mt-12" aria-hidden="true">→</div>
+
+    <div class="step flex-1 min-w-0 text-center px-6">
+      <div class="step-icon" style="background:linear-gradient(135deg,#fef9c3,#fde68a);" aria-hidden="true">🏫</div>
+      <div class="step-num" aria-hidden="true">3</div>
+      <div class="step-title">Retirá en biblioteca</div>
+      <p class="step-desc">Pasá por la biblioteca con tu DNI en el horario acordado y llevate el libro a casa.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ CATÁLOGO ═══════════════════ -->
+<section id="destacados">
+  <div class="catalogo-header">
+    <div>
+      <div style="font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">Colección completa</div>
+      <h2 class="section-title">Catálogo de Libros</h2>
+    </div>
+    <span class="catalogo-count" id="catalogo-count"></span>
+  </div>
+  <div class="catalogo-filtros">
+    <div class="catalogo-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="catalogo-input" placeholder="Buscar por título, autor o palabra clave…" oninput="filtrarCatalogo()" />
+    </div>
+    <select class="catalogo-select" id="catalogo-cat" onchange="filtrarCatalogo()">
+      <option value="">Todas las categorías</option>
+    </select>
+    <select class="catalogo-select" id="catalogo-stock" onchange="filtrarCatalogo()">
+      <option value="">Todos</option>
+      <option value="disponible">Con stock</option>
+    </select>
+    <select class="catalogo-select" id="catalogo-formato" onchange="filtrarCatalogo()">
+      <option value="">Todos los formatos</option>
+      <option value="digital">📄 Digitales (PDF)</option>
+      <option value="fisico">📚 Físicos</option>
+    </select>
+  </div>
+  <div class="books-grid" id="books-grid"></div>
+  <div class="catalogo-paginacion" id="catalogo-paginacion"></div>
+</section>
+
+<!-- ═══════════════════ ESTADÍSTICAS ═══════════════════ -->
+<section id="estadisticas" aria-label="Estadísticas generales">
+  <div class="stats-bg-blob stats-bg-blob-1" aria-hidden="true"></div>
+  <div class="stats-bg-blob stats-bg-blob-2" aria-hidden="true"></div>
+  <div class="section-eyebrow" style="position:relative;z-index:1;">
+    <span style="color:rgba(255,255,255,.5);">La biblioteca en números</span>
+    <div class="eyebrow-line" aria-hidden="true"></div>
+  </div>
+  <div class="stats-grid" style="margin-top:3rem;" role="list">
+    <div class="stat-item" role="listitem">
+      <div class="stat-value" id="stat-libros">—</div>
+      <div class="stat-label">Ejemplares disponibles</div>
+    </div>
+<div class="stat-item" role="listitem">
+  <div class="stat-value" id="stat-usuarios">-</div>
+  <div class="stat-label">Libros catalogados</div>
+</div>
+    <div class="stat-item" role="listitem">
+      <div class="stat-value" id="stat-devolucion">—</div>
+      <div class="stat-label">Devoluciones a tiempo</div>
+    </div>
+    <div class="stat-item" role="listitem">
+      <div class="stat-value" id="stat-categorias">—</div>
+      <div class="stat-label">Categorías temáticas</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-wrap">
+        <div class="logo-icon" aria-hidden="true">B</div>
+        <span class="logo-text">BibliotecaEEST N°5</span>
+      </div>
+
+      <p>Biblioteca digital de la Escuela de Educación Secundaria Técnica N°5 de Berazategui. Promovemos el acceso al conocimiento para toda la comunidad educativa.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#categorias">Categorías</a></li>
+        <li><a href="#destacados">Catálogo</a></li>
+        <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><span>📍 Calle 316 S/N esq. 368 B</span></li>
+        <li><span>Barrio Luz, Ranelagh</span></li>
+        <li><span>Berazategui · B1886DUH</span></li>
+        <li><span>📞 4258-4356</span></li>
+        <li><a href="mailto:eestn5berazategui@gmail.com">eestn5berazategui@gmail.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 EEST N°5 · Todos los derechos reservados</p>
+    <div class="inet-badge">🏛 Instituto Nacional de Educación Técnica</div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ MODAL: SOLICITAR PRÉSTAMO ═══════════════════ -->
+<div id="modal-prestamo" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;" role="dialog" aria-labelledby="modal-title">
+  <div style="background:white;border-radius:0.75rem;padding:2rem;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 25px rgba(0,0,0,0.15);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <h2 id="modal-title" style="font-size:1.5rem;font-weight:700;">Solicitar Préstamo</h2>
+      <button onclick="cerrarModalPrestamo()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;" aria-label="Cerrar modal">✕</button>
+    </div>
+    
+    <div id="modal-libro-info" style="background:#f3f4f6;padding:1rem;border-radius:0.5rem;margin-bottom:1.5rem;">
+      <div style="font-weight:600;font-size:1.125rem;" id="modal-libro-titulo">Libro</div>
+      <div style="color:#6b7280;font-size:0.875rem;margin-top:0.25rem;" id="modal-libro-stock">Stock: —</div>
+    </div>
+
+    <form id="form-solicitud-prestamo" onsubmit="enviarSolicitudPrestamo(event)">
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-weight:600;margin-bottom:0.5rem;">Nombre *</label>
+        <input type="text" id="solicitud-nombre" required placeholder="Tu nombre" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-weight:600;margin-bottom:0.5rem;">Apellido *</label>
+        <input type="text" id="solicitud-apellido" required placeholder="Tu apellido" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-weight:600;margin-bottom:0.5rem;">DNI *</label>
+        <input type="text" id="solicitud-dni" required placeholder="Ej: 12345678" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-weight:600;margin-bottom:0.5rem;">Email *</label>
+        <input type="email" id="solicitud-email" required placeholder="tu.email@escuela.com" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-weight:600;margin-bottom:0.5rem;">Teléfono</label>
+        <input type="tel" id="solicitud-telefono" placeholder="Tu teléfono (opcional)" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">Curso *</label>
+          <input type="text" id="solicitud-curso" required placeholder="Ej: 4" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+        </div>
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">División *</label>
+          <input type="text" id="solicitud-division" required placeholder="Ej: A, B" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;" maxlength="1">
+        </div>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label for="solicitud-dias" style="display:block;font-weight:600;margin-bottom:0.5rem;">Plazo solicitado</label>
+        <select id="solicitud-dias" required style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.375rem;font-size:0.95rem;">
+          <option value="7">7 días</option>
+          <option value="14" selected>14 días</option>
+          <option value="21">21 días</option>
+          <option value="30">30 días</option>
+        </select>
+      </div>
+
+      <div id="modal-error" style="display:none;background:#fee2e2;color:#991b1b;padding:0.75rem;border-radius:0.375rem;margin-bottom:1rem;font-size:0.875rem;"></div>
+
+      <div style="display:flex;gap:1rem;margin-top:2rem;">
+        <button type="submit" style="flex:1;background:#2563eb;color:white;padding:0.75rem;border:none;border-radius:0.375rem;font-weight:600;cursor:pointer;">Confirmar Solicitud</button>
+        <button type="button" onclick="cerrarModalPrestamo()" style="flex:1;background:#e5e7eb;color:#374151;padding:0.75rem;border:none;border-radius:0.375rem;font-weight:600;cursor:pointer;">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<!-- Toast sesión -->
+<div id="toast-sesion" style="
+  display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  background:#1e293b;color:#f8fafc;padding:.75rem 1.25rem;border-radius:.75rem;
+  font-size:.875rem;font-weight:500;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.25);
+  display:flex;align-items:center;gap:.6rem;opacity:0;transition:opacity .25s ease;
+  pointer-events:none;white-space:nowrap;
+" role="alert" aria-live="assertive">
+  🔒 <span>Debés iniciar sesión para poder solicitar un préstamo.</span>
+  <a href="portal-login.html" style="color:#60a5fa;font-weight:600;text-decoration:underline;pointer-events:auto;">Ingresar →</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js?v=2"></script>
+<script src="assets/js/db.js?v=2"></script>
+<script src="assets/js/script.js?v=2"></script>
+<script>
+(async () => {
+  const ROL_DESTINO = { alumno: 'panel-alumno.html', docente: 'panel-docente.html', admin: 'admin/index.html' };
+  // Reusar el cliente creado por db.js (sin claves hardcodeadas)
+  const _sb = window.supabaseClient;
+  if (!_sb) return;
+
+  const btnPanel       = document.getElementById('btn-mi-panel');
+  const btnPanelMobile = document.getElementById('btn-mi-panel-mobile');
+
+  // Mostrar botón inmediatamente si hay destino cacheado (evita condición de carrera)
+  const cached = sessionStorage.getItem('panel_destino');
+  if (cached) {
+    document.getElementById('btn-login-nav').style.display    = 'none';
+    document.getElementById('btn-login-mobile').style.display = 'none';
+    btnPanel.href = cached; btnPanel.style.display = '';
+    btnPanelMobile.href = cached; btnPanelMobile.style.display = '';
+  }
+
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) {
+    sessionStorage.removeItem('panel_destino');
+    return;
+  }
+
+  const { data: u } = await _sb
+    .from('usuarios')
+    .select('rol')
+    .eq('email', session.user.email)
+    .maybeSingle();
+  const rol = u?.rol ?? session.user.user_metadata?.rol ?? session.user.app_metadata?.role ?? 'alumno';
+  const destino = ROL_DESTINO[rol] ?? 'panel-alumno.html';
+
+  sessionStorage.setItem('panel_destino', destino);
+
+  document.getElementById('btn-login-nav').style.display    = 'none';
+  document.getElementById('btn-login-mobile').style.display = 'none';
+  btnPanel.href = destino; btnPanel.style.display = '';
+  btnPanelMobile.href = destino; btnPanelMobile.style.display = '';
+})();
+</script>
+</body>
+</html>
